@@ -29,7 +29,9 @@
 class Altitude
 {
 public:
-    void Calculate_Altitude();
+    float Calculate_Altitude();
+
+    float Hight;
 };
 
 #endif //  ADAFRUIT_BMP085_H
