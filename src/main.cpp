@@ -9,87 +9,57 @@
 #include "Calculate_Alt.h"
 #include "Wire.h"
 
+#define Button_pin 12
+
+Altitude A_p;
+Adafruit_BMP085 t;
 
 const char* filename = "/samplefile.txt";
 int z = 251;
-Altitude A_p;
-Adafruit_BMP085 t;
 int Quantity_of_Pressing = 0;
+int val = 0;
+int time_0 = 0, time_1 = 0;
 
-// void Run_Interrupt_func();
-void ICACHE_RAM_ATTR Run_Interrupt_func();
+void does_Button_pressed(void);
+
 void setup() {
-  delay(1000);
   Serial.begin(115200);
-  // Serial.println();
-  pinMode(12, INPUT);
-  attachInterrupt(digitalPinToInterrupt(12), Run_Interrupt_func, RISING);
-
+  pinMode(Button_pin, INPUT_PULLUP);
   Wire.begin(4, 5);
   // if (!t.begin()) {
 	// Serial.println("Could not find a valid BMP085 sensor, check wiring!");
 	// while (1) {}
   // }
  
-  //Initialize File System
-  if(SPIFFS.begin())
-  {
-    Serial.println("SPIFFS Initialize....ok");
-  }
-  else
-  {
-    Serial.println("SPIFFS Initialization...failed");
-  }
- 
-  //Format File System
-  if(SPIFFS.format())
-  {
-    Serial.println("File System Formated");
-  }
-  else
-  {
-    Serial.println("File System Formatting Error");
-  }
- 
-  //Create New File And Write Data to It
-  //w=Write Open file for writing
+  // //Initialize File System
+  // if( SPIFFS.begin() ) { Serial.println("SPIFFS Initialize....ok"); }
+  // else { Serial.println("SPIFFS Initialization...failed"); }
+  //  //Format File System
+  // if( SPIFFS.format() ) { Serial.println("File System Formated"); }
+  // else { Serial.println("File System Formatting Error"); }
+  //  //Create New File And Write Data to It
+  // //w=Write Open file for writing
   
-  for (z = 0; z < 65; z++)
-  {    
-    File f = SPIFFS.open(filename, "a");
-
-    if (!f)
-    {
-      Serial.println("file open failed");
-    }
-    else
-    {      
-      //Serial.println("Writing Data to File"); //Write data to file
-      
-      // A_p.Calculate_Altitude();
-
-      f.println( A_p.Calculate_Altitude() );
-      
-      f.close(); //Close file
-    }
-  }
- 
+  // for (z = 0; z < 65; z++)
+  // {    
+  //   File f = SPIFFS.open(filename, "a");
+  //   if (!f)
+  //   {
+  //     Serial.println("file open failed");
+  //   }
+  //   else
+  //   {      
+  //     //Serial.println("Writing Data to File"); //Write data to file
+  //     // A_p.Calculate_Altitude();
+  //     f.println( A_p.Calculate_Altitude() );
+  //     f.close(); //Close file
+  //   }
+  // }
 }
-
-void Run_Interrupt_func() {
-
-  Quantity_of_Pressing = Quantity_of_Pressing + 1;
-  if (Quantity_of_Pressing == 4) { 
-    Quantity_of_Pressing = 0; 
-    Serial.println("The control button was pressed by 4 times");
-  }
-  Serial.println("The control button was pressed!");
-}
-
 
 void loop() {
   int i;
-  
+  does_Button_pressed();
   // File f = SPIFFS.open(filename, "r"); //Read File data
   
   // if (!f) {
@@ -105,6 +75,38 @@ void loop() {
   //     f.close();  //Close file
   //     Serial.println("File Closed");
   // }
-  // delay(5000);
- 
+  // Serial.println(" :___");
+  // val = digitalRead(Button_pin);
+  // Serial.println(" _-> ->_");
+  // if (val == HIGH){ Serial.println("The control button was pressed!"); }
+  // Serial.println(" __;");
+  // delay(100);
+}
+
+void does_Button_pressed() {
+  Serial.println(".......->");
+  if (digitalRead(Button_pin) == HIGH){
+    Serial.println("->_1");
+    if (time_0 == 0) { Serial.println("->_2"); time_0 = millis(); Serial.print(time_0);}
+    else if (time_0 != 0 && time_1 == 0) { 
+      Serial.println("->_3");
+      time_1 = millis();
+      Serial.print("           ");
+      Serial.print(time_1);
+    }
+
+    if ((time_1 - time_0) >= 500)
+    {
+      Serial.println("The control button was pressed!");
+      Quantity_of_Pressing = Quantity_of_Pressing + 1;
+      if (Quantity_of_Pressing == 4)
+      {
+        Quantity_of_Pressing = 0;
+        Serial.println("The control button was pressed by 4 times");
+      }
+      time_0 = 0;
+      time_1 = 0;
+    }
+  }
+   //delay(100);
 }
