@@ -112,7 +112,7 @@ void setup() {
 
 void loop()
 {
-  for (;;)
+  while (WiFi.status() != WL_CONNECTED)
   {
     File f = SPIFFS.open(filename, "a");
     if (!f)
@@ -124,8 +124,6 @@ void loop()
       Serial.print("Mode_1:  ");
       f.println(A_p.Calculate_Altitude());
       f.close();
-      if (WiFi.status() == WL_CONNECTED)
-        break;
     }
   }
 
