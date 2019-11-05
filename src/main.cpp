@@ -24,19 +24,7 @@ char ledState = 0;
 int y = 0;
 // void ICACHE_RAM_ATTR Run_Interrupt_func();
 void ICACHE_RAM_ATTR onTimerISR()
-{  
-  // if ( digitalRead(12) == HIGH ) 
-  // {
-  //   // y++;
-  //   // if (y == 3)
-  //   //   Quantity_of_Pressing = Quantity_of_Pressing + 1;
-  //   // if (Quantity_of_Pressing == 4)
-  //   // {
-  //   //   Quantity_of_Pressing = 0;
-  //   //   Serial.println("The control button was pressed by 3 times");
-  //   // }
-  // } 
-
+{
   if (ledState == 0)
   {
     digitalWrite(ledPin, HIGH);
