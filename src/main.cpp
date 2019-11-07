@@ -22,7 +22,7 @@ ESP8266WebServer server(80);
 //=============== Server End Configuration ======================================
 
 //=============== Data and Graphics Configuration ===============================
-const uint16_t quant_points = 216; //max kol tochek trenda
+const uint16_t quant_points = 1024; //max kol tochek trenda
 float h[quant_points];
 float timepoints[quant_points];
 int Data_Length;
@@ -227,6 +227,7 @@ void handleRoot()
 void setup() {
   delay(1000);
   Serial.begin(115200);
+  pinMode(ledPin, OUTPUT);
   WiFi.begin(ssid, password);
   WiFi.config(ip, gateway, subnet);
   configTime(2 * 3600, 0, "pool.ntp.org", "time.nist.gov"); //NTP sayti dlia schitivaniya vremeni
@@ -234,7 +235,7 @@ void setup() {
   // Wait for connection
   Creation_of_Time_Massive();
   delay(2000);
-  tochka();
+  // tochka();
     
   Wire.begin(4, 5);
   // if (!t.begin()) {
@@ -296,6 +297,8 @@ void loop()
 
   server.handleClient();
   tochka();
+  digitalWrite(2, !digitalRead(2));
+  delay(500);
  
     //  else if (Quantity_of_Pressing == 2)
     //  {
