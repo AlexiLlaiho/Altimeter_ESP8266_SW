@@ -231,22 +231,7 @@ void setup() {
   configTime(2 * 3600, 0, "pool.ntp.org", "time.nist.gov"); //NTP sayti dlia schitivaniya vremeni
   Serial.println("");
   // Wait for connection
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.print("Connected to ");
-  Serial.println(ssid);
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-  server.on("/", handleRoot);
-  server.begin();
-  Serial.println("HTTP server started");
-  //dht.begin();
   Creation_of_Time_Massive();
-
   delay(2000);
   tochka();
     
@@ -276,6 +261,17 @@ void setup() {
     Serial.println("File System Formatting Error");
   }
 
+//================== Starting the ESP's Server =======================
+  Serial.println("");
+  Serial.print("Connected to ");
+  Serial.println(ssid);
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+  server.on("/", handleRoot);
+  server.begin();
+  Serial.println("HTTP server started");
+  
+//================ End of start ESP's Server =========================
 }
 
 
@@ -283,7 +279,7 @@ void loop()
 {
   while (WiFi.status() != WL_CONNECTED)
   {
-    File f = SPIFFS.open(filename, "a");
+    /*File f = SPIFFS.open(filename, "a");
     if (!f)
     {
       Serial.println("file open failed");
@@ -293,42 +289,48 @@ void loop()
       Serial.print("Mode_1:  ");
       // f.println(A_p.Calculate_Altitude());
       f.close();
-    }
+    }*/
+    Serial.println( A_p.Calculate_Altitude() );
   }
 
   server.handleClient();
+  tochka();
 
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= interval)
+ /* while (WiFi.status() == WL_CONNECTED)
   {
-    previousMillis = currentMillis;
-    tochka();
-  }
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis >= interval)
+    {
+      previousMillis = currentMillis;
+      tochka();
+    }
+  }*/
+    
 
-  //  else if (Quantity_of_Pressing == 2)
-  //  {
-  //    Serial.println("Mode_2");
-  //    timer1_write(900000);
-  //    File f = SPIFFS.open(filename, "r"); //Read File data
-  //    if (!f)
-  //    {
-  //      Serial.println("file open failed");
-  //    }
-  //    else
-  //    {
-  //      for (int i = 0; i < f.size(); i++) //Read upto complete file size
-  //      {
-  //        Serial.print((char)f.read());
-  //      }
-  //      f.close(); //Close file
-  //      Serial.println("File Closed");
-  //      Quantity_of_Pressing = 0;
-  //    }
-  //  }
+    //  else if (Quantity_of_Pressing == 2)
+    //  {
+    //    Serial.println("Mode_2");
+    //    timer1_write(900000);
+    //    File f = SPIFFS.open(filename, "r"); //Read File data
+    //    if (!f)
+    //    {
+    //      Serial.println("file open failed");
+    //    }
+    //    else
+    //    {
+    //      for (int i = 0; i < f.size(); i++) //Read upto complete file size
+    //      {
+    //        Serial.print((char)f.read());
+    //      }
+    //      f.close(); //Close file
+    //      Serial.println("File Closed");
+    //      Quantity_of_Pressing = 0;
+    //    }
+    //  }
 
-  //  else if (Quantity_of_Pressing == 3)
-  //  {
-  // начинаем прослушку входящих клиентов:
+    //  else if (Quantity_of_Pressing == 3)
+    //  {
+    // начинаем прослушку входящих клиентов:
 }
 
 void tochka()
