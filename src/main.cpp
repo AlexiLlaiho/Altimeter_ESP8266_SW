@@ -158,7 +158,7 @@ onTimerISR()
 
 void handleRoot()
 {
-  String trendstr;
+    String trendstr;
 
   trendstr = F("<html>\
   <head>\
@@ -173,10 +173,11 @@ void handleRoot()
         var data = new google.visualization.DataTable();\
       data.addColumn('datetime', 'Time');\
       data.addColumn('number', 'Temp, C');\
-      data.addColumn('number', 'Humidity, %');\
+      data.addColumn('number', 'Hight, meters');\
 \
-      data.addRows([");
-  uint16_t k, y = 0;
+      data.addRows([");\
+
+ uint16_t k, y = 0;
   for (int i = 1; i <= quant_points; i++)
   {
     k = tick - 1 + i;
@@ -290,23 +291,12 @@ void loop()
       // f.println(A_p.Calculate_Altitude());
       f.close();
     }*/
-    Serial.println( A_p.Calculate_Altitude() );
+    //Serial.println( A_p.Calculate_Altitude() );
   }
 
   server.handleClient();
   tochka();
-
- /* while (WiFi.status() == WL_CONNECTED)
-  {
-    unsigned long currentMillis = millis();
-    if (currentMillis - previousMillis >= interval)
-    {
-      previousMillis = currentMillis;
-      tochka();
-    }
-  }*/
-    
-
+ 
     //  else if (Quantity_of_Pressing == 2)
     //  {
     //    Serial.println("Mode_2");
@@ -328,14 +318,11 @@ void loop()
     //    }
     //  }
 
-    //  else if (Quantity_of_Pressing == 3)
-    //  {
-    // начинаем прослушку входящих клиентов:
 }
 
 void tochka()
 {
-  h[tick] = Data_Massiv[tick];
+  h[tick] = A_p.Calculate_Altitude();
   //t[tick] = dht.readTemperature();
   Serial.print(h[tick]);
   Serial.print("    ");
@@ -350,7 +337,7 @@ void tochka()
 
 void Creation_of_Time_Massive()
 {
-  int t_Old = 0;
+  float t_Old = 0;
   Data_Length = sizeof(h) / sizeof(float);
   for (int k = 0; k < Data_Length; k++)
   {

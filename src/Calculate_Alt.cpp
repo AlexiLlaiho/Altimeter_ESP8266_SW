@@ -9,7 +9,7 @@ float Altitude::Calculate_Altitude()
     while (1) {}
   }
   // Serial.print("Temperature = ");
-  Serial.print(bmp.readTemperature());
+  //Serial.print(bmp.readTemperature());
 //   //Serial.println(" *C");
 
 //   Serial.print("  Pressure = ");
