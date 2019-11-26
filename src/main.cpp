@@ -139,6 +139,7 @@ int y = 0;
 //============= Function's Prototypes ===============================================
 void Creation_of_Time_Massive(void);
 void tochka(void);
+void handleRoot(void);
 //============= End Function's Prototypes ===========================================
 
 void ICACHE_RAM_ATTR
@@ -154,74 +155,6 @@ onTimerISR()
     digitalWrite(ledPin, LOW);
     ledState = 0;
   }
-}
-
-void handleRoot()
-{
-    String trendstr;
-
-  trendstr = F("<html>\
-  <head>\
-    <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>\
-    <meta http-equiv='refresh' content='1000'/>\
-    <title>Daily temperature</title>\
-    <script type='text/javascript'>\
-      google.charts.load('current', {'packages':['corechart']});\
-      google.charts.setOnLoadCallback(drawChart);\
-\
-      function drawChart() {\
-        var data = new google.visualization.DataTable();\
-      data.addColumn('datetime', 'Time');\
-      data.addColumn('number', 'Temp, C');\
-      data.addColumn('number', 'Hight, meters');\
-\
-      data.addRows([");\
-
- uint16_t k, y = 0;
-  for (int i = 1; i <= quant_points; i++)
-  {
-    k = tick - 1 + i;
-    if (h[k] > 0)
-    {
-      if (y > 0)
-        trendstr += ",";
-      y++;
-      if (k > quant_points - 1)
-        k = k - quant_points;
-      trendstr += "[new Date(";
-      trendstr += String(tnow[k] - (2 * 3600)); //2- chasovoy poyas
-      trendstr += "*1000), ";
-      trendstr += timepoints[k];
-      trendstr += ", ";
-      trendstr += h[k];
-      trendstr += "]";
-    }
-  }
-  trendstr += F("]);\
-\
-        var options = {width: '100%',\
-          title: 'Sky Orange Altimeter',\
-          curveType: 'function',\
-          legend: { position: 'bottom' },\
-          hAxis: {format: 'dd.MM.yyyy HH:mm',\
-          gridlines: {\
-            count: 10,\
-          },\
-        }\
-        };\
-\
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));\
-        var formatter = new google.visualization.DateFormat({pattern: 'dd.MM.yyyy HH:mm'});\
-        formatter.format(data, 0);\
-        chart.draw(data, options);\
-      }\
-    </script>\
-  </head>\
-  <body>\
-    <div id='curve_chart' style='width: 100%; height: 600px'></div>\
-  </body>\
-</html>");
-  server.send(200, F("text/html"), trendstr);
 }
 
 void setup() {
@@ -269,9 +202,7 @@ void setup() {
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  server.on("/", handleRoot);
-  server.begin();
-  Serial.println("HTTP server started");
+  
   
 //================ End of start ESP's Server =========================
 }
@@ -298,7 +229,10 @@ void loop()
   server.handleClient();
   tochka();
   digitalWrite(2, !digitalRead(2));
-  delay(500);
+  server.on("/", handleRoot);
+  server.begin();
+  Serial.println("HTTP server started");
+  delay(5000);
  
     //  else if (Quantity_of_Pressing == 2)
     //  {
@@ -347,4 +281,73 @@ void Creation_of_Time_Massive()
     timepoints[k] = t_Old + 0.125;
     t_Old = timepoints[k];
   }
+}
+
+void handleRoot()
+{
+  Serial.println("");
+  String trendstr;
+
+  trendstr = F("<html>\
+  <head>\
+    <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>\
+    <meta http-equiv='refresh' content='1000'/>\
+    <title>Daily temperature</title>\
+    <script type='text/javascript'>\
+      google.charts.load('current', {'packages':['corechart']});\
+      google.charts.setOnLoadCallback(drawChart);\
+\
+      function drawChart() {\
+        var data = new google.visualization.DataTable();\
+      data.addColumn('datetime', 'Time');\
+      data.addColumn('number', 'Temp, C');\
+      data.addColumn('number', 'Hight, meters');\
+\
+      data.addRows([");
+
+  uint16_t k, y = 0;
+  for (int i = 1; i <= quant_points; i++)
+  {
+    k = tick - 1 + i;
+    if (h[k] > 0)
+    {
+      if (y > 0)
+        trendstr += ",";
+      y++;
+      if (k > quant_points - 1)
+        k = k - quant_points;
+      trendstr += "[new Date(";
+      trendstr += String(tnow[k] - (2 * 3600)); //2- chasovoy poyas
+      trendstr += "*1000), ";
+      // trendstr += timepoints[k];
+      trendstr += ", ";
+      trendstr += h[k];
+      trendstr += "]";
+    }
+  }
+  trendstr += F("]);\
+\
+        var options = {width: '100%',\
+          title: 'Sky Orange Altimeter',\
+          curveType: 'function',\
+          legend: { position: 'bottom' },\
+          hAxis: {format: 'dd.MM.yyyy HH:mm',\
+          gridlines: {\
+            count: 10,\
+          },\
+        }\
+        };\
+\
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));\
+        var formatter = new google.visualization.DateFormat({pattern: 'dd.MM.yyyy HH:mm'});\
+        formatter.format(data, 0);\
+        chart.draw(data, options);\
+      }\
+    </script>\
+  </head>\
+  <body>\
+    <div id='curve_chart' style='width: 100%; height: 600px'></div>\
+  </body>\
+</html>");
+  server.send(200, F("text/html"), trendstr);
 }
