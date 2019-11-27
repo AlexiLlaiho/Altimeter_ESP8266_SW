@@ -17,12 +17,63 @@ char State = 0;
 const char* filename = "/samplefile.txt";
 int z = 251;
 int ledPin = 2;
-Altitude A_p;
-Adafruit_BMP085 t;
 int Quantity_of_Pressing = 0;
 char ledState = 0;
 int y = 0;
-// void ICACHE_RAM_ATTR Run_Interrupt_func();
+
+
+Altitude A_p;
+Adafruit_BMP085 t;
+WiFiServer server(80);
+
+void setup() 
+{
+  delay(1000);
+  Serial.begin(115200);
+  
+
+
+}
+
+void loop()
+{
+  while (WiFi.status() != WL_CONNECTED)
+  {
+   
+  }
+
+
+}
+
+void Initialize_File_System()
+{  
+  if(SPIFFS.begin())
+  {
+    Serial.println("SPIFFS Initialize....ok");
+  }
+  else
+  {
+    Serial.println("SPIFFS Initialization...failed");
+  }
+  
+  if(SPIFFS.format())
+  {
+    Serial.println("File System Formated");
+  }
+  else
+  {
+    Serial.println("File System Formatting Error");
+  }
+}
+
+void WiFi_Start()
+{  
+  Serial.println();   // подключаемся к WiFi-сети:
+  Serial.print("Connecting to "); // "Подключаемся к "
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+}
+
 void ICACHE_RAM_ATTR onTimerISR()
 {
   if (ledState == 0)
@@ -37,72 +88,9 @@ void ICACHE_RAM_ATTR onTimerISR()
   }    
 }
 
-WiFiServer server(80);
-
-void setup() {
-  delay(1000);
-  Serial.begin(115200);
-  pinMode(2, OUTPUT);
-  pinMode(12, INPUT);
-  // attachInterrupt(digitalPinToInterrupt(12), Run_Interrupt_func, RISING);
-  timer1_attachInterrupt(onTimerISR);
-  timer1_enable(TIM_DIV256, TIM_EDGE, TIM_LOOP);
-  timer1_write(1500);
-  Wire.begin(4, 5);
-  // if (!t.begin()) {
-	// Serial.println("Could not find a valid BMP085 sensor, check wiring!");
-	// while (1) {}
-  // }
- 
-  //Initialize File System
-  if(SPIFFS.begin())
-  {
-    Serial.println("SPIFFS Initialize....ok");
-  }
-  else
-  {
-    Serial.println("SPIFFS Initialization...failed");
-  }
- 
-  //Format File System
-  if(SPIFFS.format())
-  {
-    Serial.println("File System Formated");
-  }
-  else
-  {
-    Serial.println("File System Formatting Error");
-  }
-
-  // подключаемся к WiFi-сети:
-  Serial.println();
-  Serial.print("Connecting to "); // "Подключаемся к "
-  Serial.println(ssid);
-
-  WiFi.begin(ssid, password);
-}
-
-// void Run_Interrupt_func()
-// {
-//   Serial.println("->");
-//   duration = pulseIn(12, HIGH);
-//   if (duration > 3)
-//   {    
-//     Quantity_of_Pressing = Quantity_of_Pressing + 1;
-//     Serial.println("The control button was pressed!");
-//   }
-//   if (Quantity_of_Pressing == 4)
-//   {
-//     Quantity_of_Pressing = 0;    
-//     Serial.println("The control button was pressed by 3 times");
-//   }
-// }
-
-void loop()
+void Open_and_Write_File()
 {
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    File f = SPIFFS.open(filename, "a");
+   File f = SPIFFS.open(filename, "a");
     if (!f)
     {
       Serial.println("file open failed");
@@ -113,8 +101,10 @@ void loop()
       f.println(A_p.Calculate_Altitude());
       f.close();
     }
-  }
+}
 
+void SVG_Graph_Run()
+{
   Serial.println("WiFi connected");                                // "Подключение к WiFi выполнено"
   server.begin();                                                  // запускаем веб-сервер:
   Serial.println("Web server running. Waiting for the ESP IP..."); // "Веб-сервер запущен. Ожидание IP-адреса ESP..."
@@ -190,4 +180,23 @@ void loop()
     client.stop();
     Serial.println("Client disconnected.");    
   }
+}
+
+void BMP_check_and_start()
+{
+  Wire.begin(4, 5);
+  // if (!t.begin()) {
+	// Serial.println("Could not find a valid BMP085 sensor, check wiring!");
+	// while (1) {}
+  // }
+}
+
+void GPIO_TIM_setup()
+{
+  pinMode(2, OUTPUT);
+  pinMode(12, INPUT);
+  // attachInterrupt(digitalPinToInterrupt(12), Run_Interrupt_func, RISING);
+  timer1_attachInterrupt(onTimerISR);
+  timer1_enable(TIM_DIV256, TIM_EDGE, TIM_LOOP);
+  timer1_write(1500);
 }
