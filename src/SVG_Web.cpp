@@ -18,7 +18,7 @@ void main_web_cycle()
   server.handleClient();
 }
 
-void Web_Graph::Polyline()
+void Polyline()
 { // This routine set up the Polygon SVG string for parsing to w3.org
   String out = "";
   uint16 *p_xM;
@@ -37,19 +37,18 @@ void Web_Graph::Polyline()
                    //
   for (uint16 i = 0; i < Quantity_of_elements; i++)
   {
-    sprintf(temp, "<polyline points =\" %u, %u  %u, %u \" stroke=\"blue\" stroke-width =\"3\" /> \n", *(p_xM + i), *(p_yM + i), *(p_xM + (i + 1)), *(p_yM + (i + 1)) );
+    sprintf(temp, "<polyline points =\" %u, %u  %u, %u \" stroke=\"blue\" stroke-width =\"3\" /> \n", *(p_xM + i), *(p_yM + i), *(p_xM + (i + 1)), *(p_yM + (i + 1)));
     out += temp;
     // Debug Serial.println(out);
   }
   out += "</g>\n</svg>\n";                // close the SVG wrapper
   server.send(200, "image/svg+xml", out); /* and send it to http://www.w3.org/2000/svg */
 
-  delay(500);                             /*If you have a Sizable graphic then allow time for the response from w3.org before polling the site again (else things will break) */
+  delay(500); /*If you have a Sizable graphic then allow time for the response from w3.org before polling the site again (else things will break) */
 }
 
 void handleRoot()
 {
-
   char temp[400];
   int sec = millis() / 1000;
   int min = sec / 60;
@@ -111,29 +110,29 @@ void Web_Graph::Check_Connection()
     Serial.println("MDNS responder started");
   }
   server.on("/", handleRoot);
-  server.on("/test.svg", meOWN_func.Polyline());
+  server.on("/test.svg", Polyline);
   server.on("/inline", []() { server.send(200, "text/plain", "this works as well"); });
   server.onNotFound(handleNotFound);
   server.begin();
   Serial.println("HTTP server started");
 }
 
-// void Web_Graph::Num_of_Elements()
-// {
-//   Quantity_of_elements = sizeof(Data_Mass)/sizeof(float);
-//   Serial.println(Quantity_of_elements);
-//   if (Quantity_of_elements != 0)
-//   {
-//     uint16 Past_Flight_Time = 0;
-//     for(uint16 i = 0; i < Quantity_of_elements; i++)
-//     {
-//       Data_Mass[i] = hightM - ( fData_Mass[i] * 10 );
-//       Flight_Time[i] = 12 + Past_Flight_Time;
-//       Past_Flight_Time = Flight_Time[i];
-//       Serial.print(Data_Mass[i]);
-//       Serial.print("         ");
-//       Serial.println(Flight_Time[i]);
-//       delay(350);
-//     }
-//   }
-// }
+void Web_Graph::Num_of_Elements()
+{
+  Quantity_of_elements = sizeof(Data_Mass)/sizeof(float);
+  Serial.println(Quantity_of_elements);
+  if (Quantity_of_elements != 0)
+  {
+    uint16 Past_Flight_Time = 0;
+    for(uint16 i = 0; i < Quantity_of_elements; i++)
+    {
+      Data_Mass[i] = hightM - ( fData_Mass[i] * 10 );
+      Flight_Time[i] = 12 + Past_Flight_Time;
+      Past_Flight_Time = Flight_Time[i];
+      Serial.print(Data_Mass[i]);
+      Serial.print("         ");
+      Serial.println(Flight_Time[i]);
+      delay(350);
+    }
+  }
+}

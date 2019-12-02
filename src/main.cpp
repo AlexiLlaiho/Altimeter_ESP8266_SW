@@ -24,7 +24,7 @@ int y = 0;
 
 Altitude A_p;
 Adafruit_BMP085 t;
-WiFiServer server(80);
+
 
 void setup() 
 {
@@ -105,12 +105,12 @@ void Open_and_Write_File()
 
 void SVG_Graph_Run()
 {
-  Serial.println("WiFi connected");                                // "Подключение к WiFi выполнено"
-  server.begin();                                                  // запускаем веб-сервер:
-  Serial.println("Web server running. Waiting for the ESP IP..."); // "Веб-сервер запущен. Ожидание IP-адреса ESP..."
-  delay(10000);
-  Serial.println(WiFi.status());
-  Serial.println(WiFi.localIP()); // печатаем IP-адрес ESP:
+  // Serial.println("WiFi connected");                                // "Подключение к WiFi выполнено"
+  // server.begin();                                                  // запускаем веб-сервер:
+  // Serial.println("Web server running. Waiting for the ESP IP..."); // "Веб-сервер запущен. Ожидание IP-адреса ESP..."
+  // delay(10000);
+  // Serial.println(WiFi.status());
+  // Serial.println(WiFi.localIP()); // печатаем IP-адрес ESP:
 
   //  else if (Quantity_of_Pressing == 2)
   //  {
@@ -136,50 +136,50 @@ void SVG_Graph_Run()
   //  else if (Quantity_of_Pressing == 3)
   //  {
   // начинаем прослушку входящих клиентов:
-  WiFiClient client = server.available();
+  // WiFiClient client = server.available();
 
-  if (client)
-  {
-    Serial.println("New client"); //  "Новый клиент"
-    // создаем переменную типа «boolean»,
-    // чтобы определить конец HTTP-запроса:
-    boolean blank_line = true;
-    while (client.connected())
-    {
-      if (client.available())
-      {
-        char c = client.read();
+  // if (client)
+  // {
+  //   Serial.println("New client"); //  "Новый клиент"
+  //   // создаем переменную типа «boolean»,
+  //   // чтобы определить конец HTTP-запроса:
+  //   boolean blank_line = true;
+  //   while (client.connected())
+  //   {
+  //     if (client.available())
+  //     {
+  //       char c = client.read();
 
-        if (c == '\n' && blank_line)
-        {
-          //  getTemperature();
-          client.println("HTTP/1.1 200 OK");
-          client.println("Content-Type: text/html");
-          client.println("Connection: close");
-          client.println();
-          // веб-страница с данными о температуре:
-          client.println("<!DOCTYPE HTML>");
-          client.println("<html>");
-          client.println("<head></head><body><h1>Altimeter - Hight</h1><h3>Hight in Meters: ");
-          client.println(A_p.Calculate_Altitude());
-          break;
-        }
-        if (c == '\n')
-        {
-          // если обнаружен переход на новую строку:
-          blank_line = true;
-        }
-        else if (c != '\r')
-        {
-          // если в текущей строчке найден символ:
-          blank_line = false;
-        }
-      }
-    }    
-    delay(1);
-    client.stop();
-    Serial.println("Client disconnected.");    
-  }
+  //       if (c == '\n' && blank_line)
+  //       {
+  //         //  getTemperature();
+  //         client.println("HTTP/1.1 200 OK");
+  //         client.println("Content-Type: text/html");
+  //         client.println("Connection: close");
+  //         client.println();
+  //         // веб-страница с данными о температуре:
+  //         client.println("<!DOCTYPE HTML>");
+  //         client.println("<html>");
+  //         client.println("<head></head><body><h1>Altimeter - Hight</h1><h3>Hight in Meters: ");
+  //         client.println(A_p.Calculate_Altitude());
+  //         break;
+  //       }
+  //       if (c == '\n')
+  //       {
+  //         // если обнаружен переход на новую строку:
+  //         blank_line = true;
+  //       }
+  //       else if (c != '\r')
+  //       {
+  //         // если в текущей строчке найден символ:
+  //         blank_line = false;
+  //       }
+  //     }
+  //   }    
+  //   delay(1);
+  //   client.stop();
+  //   Serial.println("Client disconnected.");    
+  // }
 }
 
 void BMP_check_and_start()
