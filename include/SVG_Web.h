@@ -39,6 +39,7 @@ public:
 void handleNotFound();
 void handleRoot();
 void Polyline();
+void SVG_Graph_Run();
 
 uint16 Flight_Time[126];
 uint16 Data_Mass[126];

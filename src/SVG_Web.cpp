@@ -136,3 +136,82 @@ void Web_Graph::Num_of_Elements()
     }
   }
 }
+
+void SVG_Graph_Run()
+{
+  // Serial.println("WiFi connected");                                // "Подключение к WiFi выполнено"
+  // server.begin();                                                  // запускаем веб-сервер:
+  // Serial.println("Web server running. Waiting for the ESP IP..."); // "Веб-сервер запущен. Ожидание IP-адреса ESP..."
+  // delay(10000);
+  // Serial.println(WiFi.status());
+  // Serial.println(WiFi.localIP()); // печатаем IP-адрес ESP:
+
+  //  else if (Quantity_of_Pressing == 2)
+  //  {
+  //    Serial.println("Mode_2");
+  //    timer1_write(900000);
+  //    File f = SPIFFS.open(filename, "r"); //Read File data
+  //    if (!f)
+  //    {
+  //      Serial.println("file open failed");
+  //    }
+  //    else
+  //    {
+  //      for (int i = 0; i < f.size(); i++) //Read upto complete file size
+  //      {
+  //        Serial.print((char)f.read());
+  //      }
+  //      f.close(); //Close file
+  //      Serial.println("File Closed");
+  //      Quantity_of_Pressing = 0;
+  //    }
+  //  }
+
+  //  else if (Quantity_of_Pressing == 3)
+  //  {
+  // начинаем прослушку входящих клиентов:
+  // WiFiClient client = server.available();
+
+  // if (client)
+  // {
+  //   Serial.println("New client"); //  "Новый клиент"
+  //   // создаем переменную типа «boolean»,
+  //   // чтобы определить конец HTTP-запроса:
+  //   boolean blank_line = true;
+  //   while (client.connected())
+  //   {
+  //     if (client.available())
+  //     {
+  //       char c = client.read();
+
+  //       if (c == '\n' && blank_line)
+  //       {
+  //         //  getTemperature();
+  //         client.println("HTTP/1.1 200 OK");
+  //         client.println("Content-Type: text/html");
+  //         client.println("Connection: close");
+  //         client.println();
+  //         // веб-страница с данными о температуре:
+  //         client.println("<!DOCTYPE HTML>");
+  //         client.println("<html>");
+  //         client.println("<head></head><body><h1>Altimeter - Hight</h1><h3>Hight in Meters: ");
+  //         client.println(A_p.Calculate_Altitude());
+  //         break;
+  //       }
+  //       if (c == '\n')
+  //       {
+  //         // если обнаружен переход на новую строку:
+  //         blank_line = true;
+  //       }
+  //       else if (c != '\r')
+  //       {
+  //         // если в текущей строчке найден символ:
+  //         blank_line = false;
+  //       }
+  //     }
+  //   }
+  //   delay(1);
+  //   client.stop();
+  //   Serial.println("Client disconnected.");
+  // }
+}
