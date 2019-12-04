@@ -5,8 +5,8 @@
   BSD license, all text above must be included in any redistribution
  ****************************************************/
 
-#ifndef SPIFFS_FILE_SYSTEM_H
-#define SPIFFS_FILE_SYSTEM_H
+#ifndef SP_FILE_SYS_H
+#define SP_FILE_SYS_H
 
 #if (ARDUINO >= 100)
  #include "Arduino.h"

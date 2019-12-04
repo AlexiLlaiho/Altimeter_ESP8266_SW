@@ -9,13 +9,13 @@
 #define SVG_WEB_H
 
 #if (ARDUINO >= 100)
- #include "Arduino.h"
+ #include <Arduino.h>
 #else
- #include "WProgram.h"
+ #include <WProgram.h>
 #endif
 #define PC_resolution 1 //Phone 1
 
-#include "Wire.h"
+#include <Wire.h>
 #include <Adafruit_BMP085.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>

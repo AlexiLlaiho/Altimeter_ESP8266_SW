@@ -5,7 +5,7 @@
   BSD license, all text above must be included in any redistribution
  ****************************************************/
 
- #include "Spiffs_File_System.h"
+#include "Sp_File_Sys.h"
 
 const char *filename = "/samplefile.txt";
 
@@ -41,8 +41,12 @@ void Open_and_Write_File()
     }
     else
     {
-      Serial.print("Mode_1:  ");
-      f.println(A_p.Calculate_Altitude());
+      Altitude dA;
+      Serial.print("Saving data in process: ");
+      for (uint16 j = 0; j < 10000; j++)
+      {
+        f.println( dA.Flight_Data_Massive[j] );
+      }
       f.close();
     }
 }

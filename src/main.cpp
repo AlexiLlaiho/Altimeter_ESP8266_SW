@@ -1,5 +1,5 @@
 /*
- * ESP8266 SPIFFS Basic Reading and Writing File 
+ * ESP8266 ALTIMETER for aircraft models 
  *
  */
  
@@ -9,40 +9,38 @@
 #include "Calculate_Alt.h"
 #include "Wire.h"
 #include "Ticker.h"
+#include "SVG_Web.h"
+#include "Sp_File_Sys.h"
+#include "Calculate_Alt.h"
 
-// вписываем здесь SSID и пароль для вашей WiFi-сети:
+#define ledPin 2
+
+Altitude fD;
 const char* ssid = "bb-alex";
 const char* password = "AuroraSky1819";
-char State = 0;
-
-int z = 251;
-int ledPin = 2;
-int Quantity_of_Pressing = 0;
 char ledState = 0;
-int y = 0;
 
+void WiFi_Start(void);
+void BMP_check_and_start(void);
+void GPIO_TIM_setup(void);
 
-
-Adafruit_BMP085 t;
-
-
-void setup() 
+void setup()
 {
   delay(1000);
   Serial.begin(115200);
-  
-
-
+  BMP_check_and_start();
+  Initialize_File_System();
+  GPIO_TIM_setup();
+  WiFi_Start();
 }
 
 void loop()
-{
+{  
   while (WiFi.status() != WL_CONNECTED)
   {
-   
+    fD.Write_Data_to_Massive();
   }
-
-
+  Open_and_Write_File();
 }
 
 
@@ -71,11 +69,16 @@ void ICACHE_RAM_ATTR onTimerISR()
 
 void BMP_check_and_start()
 {
+  Adafruit_BMP085 t;
+
   Wire.begin(4, 5);
-  // if (!t.begin()) {
-	// Serial.println("Could not find a valid BMP085 sensor, check wiring!");
-	// while (1) {}
-  // }
+  if (!t.begin())
+  {
+    Serial.println("Could not find a valid BMP085 sensor, check wiring!");
+    while (1)
+    {
+    }
+  }
 }
 
 void GPIO_TIM_setup()

@@ -31,11 +31,26 @@ float Altitude::Calculate_Altitude()
 //   // vary with weather and such. If it is 1015 millibars
 //   // that is equal to 101500 Pascals.
 Serial.print("  ");
-Serial.println(bmp.readAltitude(102276));
+Serial.print(bmp.readAltitude(102276));
+Serial.print("  ");
 //   Serial.println(" meters");
 Hight = (bmp.readAltitude(102276));
 //   Serial.println();
   delay(100);
 
   return Hight;
+}
+
+void Altitude::Write_Data_to_Massive()
+{  
+  Flight_Data_Massive[i] = Calculate_Altitude();
+  Serial.print(Flight_Data_Massive[i]);
+  if (i < 10000) 
+  {
+    ++i;
+  }
+  else if (i == 10000)
+  {
+    i = 0;
+  }
 }

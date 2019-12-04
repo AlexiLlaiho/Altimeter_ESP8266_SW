@@ -24,14 +24,17 @@
  #include "WProgram.h"
 #endif
 #include "Wire.h"
-#include <Adafruit_BMP085.h>
+#include "Adafruit_BMP085.h"
 
 class Altitude
 {
 public:
     float Calculate_Altitude();
+    void Write_Data_to_Massive();
 
     float Hight;
+    uint16_t i = 0;
+    uint16_t Flight_Data_Massive[10000];
 };
 
 #endif //  ADAFRUIT_BMP085_H
