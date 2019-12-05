@@ -14,8 +14,10 @@
 #include "Calculate_Alt.h"
 
 #define ledPin 2
+#define vDEBUG
 
 Altitude fD;
+Web_Graph wG;
 const char* ssid = "bb-alex";
 const char* password = "AuroraSky1819";
 char ledState = 0;
@@ -41,14 +43,17 @@ void loop()
     fD.Write_Data_to_Massive();
   }
   Open_and_Write_File();
+  wG.main_web_cycle();
 }
 
 
 void WiFi_Start()
-{  
+{ 
+  #ifdef vDEBUG
   Serial.println();   // подключаемся к WiFi-сети:
   Serial.print("Connecting to "); // "Подключаемся к "
   Serial.println(ssid);
+  #endif 
   WiFi.begin(ssid, password);
 }
 

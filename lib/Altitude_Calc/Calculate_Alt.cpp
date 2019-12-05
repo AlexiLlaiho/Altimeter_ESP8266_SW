@@ -9,7 +9,10 @@ float Altitude::Calculate_Altitude()
     while (1) {}
   }
   // Serial.print("Temperature = ");
+  #ifdef vDEBUG
   Serial.print(bmp.readTemperature());
+  #endif
+  
 //   //Serial.println(" *C");
 
 //   Serial.print("  Pressure = ");
@@ -30,9 +33,12 @@ float Altitude::Calculate_Altitude()
 //   // if you know the current sea level pressure which will
 //   // vary with weather and such. If it is 1015 millibars
 //   // that is equal to 101500 Pascals.
+#ifdef vDEBUG
 Serial.print("  ");
 Serial.print(bmp.readAltitude(102276));
-Serial.print("  ");
+Serial.print("  ");  
+#endif
+
 //   Serial.println(" meters");
 Hight = (bmp.readAltitude(102276));
 //   Serial.println();
@@ -44,7 +50,10 @@ Hight = (bmp.readAltitude(102276));
 void Altitude::Write_Data_to_Massive()
 {  
   Flight_Data_Massive[i] = Calculate_Altitude();
-  Serial.print(Flight_Data_Massive[i]);
+  #ifdef vDEBUG
+  Serial.println(Flight_Data_Massive[i]);
+  #endif
+  
   if (i < 10000) 
   {
     ++i;

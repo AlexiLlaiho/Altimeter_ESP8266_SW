@@ -12,7 +12,7 @@ MDNSResponder mdns;
 ESP8266WebServer server(80);
 Web_Graph meOWN_func;
 
-void main_web_cycle() 
+void Web_Graph::main_web_cycle() 
 {
   mdns.update();
   server.handleClient();
