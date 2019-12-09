@@ -23,6 +23,7 @@
 #else
  #include "WProgram.h"
 #endif
+#include "system_status.h"
 #include "Wire.h"
 #include "Adafruit_BMP085.h"
 
@@ -32,8 +33,7 @@ public:
     float Calculate_Altitude();
     void Write_Data_to_Massive();
 
-    float Hight;
-    uint16_t i = 0;
+    float Hight;    
     uint16_t Flight_Data_Massive[10000];
 };
 

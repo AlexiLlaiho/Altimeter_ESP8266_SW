@@ -8,6 +8,7 @@
 #include "Sp_File_Sys.h"
 
 const char *filename = "/samplefile.txt";
+int8_t dFile_recorded = 0x00;
 
 Altitude A_p;
 
@@ -42,11 +43,12 @@ void Open_and_Write_File()
     else
     {
       Altitude dA;
-      Serial.print("Saving data in process: ");
+      Serial.println("Saving data in process: ");
       for (uint16 j = 0; j < 10000; j++)
       {
         f.println( dA.Flight_Data_Massive[j] );
       }
+      dFile_recorded = 0x01;
       f.close();
     }
 }

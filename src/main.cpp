@@ -4,6 +4,7 @@
  */
  
 #include "Arduino.h"
+#include "system_status.h"
 #include <ESP8266WiFi.h>
 #include <FS.h>   //Include File System Headers
 #include "Calculate_Alt.h"
@@ -13,13 +14,11 @@
 #include "Sp_File_Sys.h"
 #include "Calculate_Alt.h"
 
-#define ledPin 2
-#define vDEBUG
+uint16 Flight_Time[10000];
+extern int8_t dFile_recorded = 0x00;
 
 Altitude fD;
 Web_Graph wG;
-const char* ssid = "bb-alex";
-const char* password = "AuroraSky1819";
 char ledState = 0;
 
 void WiFi_Start(void);
@@ -33,7 +32,7 @@ void setup()
   BMP_check_and_start();
   Initialize_File_System();
   GPIO_TIM_setup();
-  WiFi_Start();
+  wG.WiFi_Start();
 }
 
 void loop()
@@ -43,19 +42,12 @@ void loop()
     fD.Write_Data_to_Massive();
   }
   Open_and_Write_File();
-  wG.main_web_cycle();
+  if (dFile_recorded == 0x01)
+  {
+    wG.main_web_cycle();
+  }  
 }
 
-
-void WiFi_Start()
-{ 
-  #ifdef vDEBUG
-  Serial.println();   // подключаемся к WiFi-сети:
-  Serial.print("Connecting to "); // "Подключаемся к "
-  Serial.println(ssid);
-  #endif 
-  WiFi.begin(ssid, password);
-}
 
 void ICACHE_RAM_ATTR onTimerISR()
 {

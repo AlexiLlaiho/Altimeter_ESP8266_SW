@@ -1,6 +1,8 @@
 #include "Calculate_Alt.h"
 
 Adafruit_BMP085 bmp;
+extern uint16 Flight_Time[10000];
+uint16_t i = 0;
 
 float Altitude::Calculate_Altitude()
 {
@@ -50,12 +52,16 @@ Hight = (bmp.readAltitude(102276));
 void Altitude::Write_Data_to_Massive()
 {  
   Flight_Data_Massive[i] = Calculate_Altitude();
+  Flight_Time[i] = i;
   #ifdef vDEBUG
   Serial.println(Flight_Data_Massive[i]);
   #endif
   
   if (i < 10000) 
   {
+    #ifdef vDEBUG
+    Serial.println(i);
+    #endif
     ++i;
   }
   else if (i == 10000)

@@ -1,5 +1,13 @@
 #include "SVG_Web.h"
 
+extern uint16 Flight_Time[10000];
+uint16 Data_Mass[10000];
+uint16 Quantity_of_elements;
+
+MDNSResponder mdns;
+ESP8266WebServer server(80);
+Web_Graph meOWN_func;
+
 #ifdef PC_resolution
   String out_b = "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"1900\" height=\"1000\">\n";
   uint16 hightM = 1000;
@@ -8,9 +16,16 @@
   uint16 hightM = 1400;
 #endif
 
-MDNSResponder mdns;
-ESP8266WebServer server(80);
-Web_Graph meOWN_func;
+
+void Web_Graph::WiFi_Start()
+{
+#ifdef vDEBUG
+  Serial.println();               // подключаемся к WiFi-сети:
+  Serial.print("Connecting to "); // "Подключаемся к "
+  Serial.println(ssid);
+#endif
+  WiFi.begin(ssid, password);
+}
 
 void Web_Graph::main_web_cycle() 
 {
@@ -20,11 +35,12 @@ void Web_Graph::main_web_cycle()
 
 void Polyline()
 { // This routine set up the Polygon SVG string for parsing to w3.org
+  Altitude aA;
   String out = "";
-  uint16 *p_xM;
-  uint16 *p_yM;
-  p_xM = Data_Mass;
-  p_yM = Flight_Time;
+  uint16_t *p_xM;
+  uint16_t *p_yM;
+  p_xM = Flight_Time;
+  p_yM = aA.Flight_Data_Massive;
   char temp[120];
   out += out_b;
   out += "<g >\n"; // Start our data string
@@ -119,12 +135,14 @@ void Web_Graph::Check_Connection()
 
 void Web_Graph::Num_of_Elements()
 {
-  Quantity_of_elements = sizeof(Data_Mass)/sizeof(float);
+  Altitude aA;
+
+  Quantity_of_elements = sizeof(aA.Flight_Data_Massive) / sizeof(uint16_t);
   Serial.println(Quantity_of_elements);
   if (Quantity_of_elements != 0)
   {
-    uint16 Past_Flight_Time = 0;
-    for(uint16 i = 0; i < Quantity_of_elements; i++)
+    uint16_t Past_Flight_Time = 0;
+    for(uint16_t i = 0; i < Quantity_of_elements; i++)
     {
       Data_Mass[i] = hightM - ( fData_Mass[i] * 10 );
       Flight_Time[i] = 12 + Past_Flight_Time;
