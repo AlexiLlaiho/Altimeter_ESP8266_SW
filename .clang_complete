@@ -1,11 +1,15 @@
 -IC:/Users/USER/Documents/PlatformIO/Projects/ESP8266_Altimeter/include
 -IC:/Users/USER/Documents/PlatformIO/Projects/ESP8266_Altimeter/src
+-IC:/Users/USER/.platformio/packages/framework-arduinoespressif8266/libraries/Ticker/src
+-IC:/Users/USER/Documents/PlatformIO/Projects/ESP8266_Altimeter/lib/Web_Graph
 -IC:/Users/USER/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WebServer/src
 -IC:/Users/USER/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266mDNS/src
--IC:/Users/USER/Documents/PlatformIO/Projects/ESP8266_Altimeter/lib/Adafruit_BMP180
 -IC:/Users/USER/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src
+-IC:/Users/USER/Documents/PlatformIO/Projects/ESP8266_Altimeter/lib/Work_with_File
+-IC:/Users/USER/Documents/PlatformIO/Projects/ESP8266_Altimeter/lib/Altitude_Calc
+-IC:/Users/USER/Documents/PlatformIO/Projects/ESP8266_Altimeter/lib/System_Setup
+-IC:/Users/USER/Documents/PlatformIO/Projects/ESP8266_Altimeter/lib/Adafruit_BMP180
 -IC:/Users/USER/.platformio/packages/framework-arduinoespressif8266/libraries/Wire
--IC:/Users/USER/.platformio/packages/framework-arduinoespressif8266/libraries/Ticker/src
 -IC:/Users/USER/.platformio/packages/framework-arduinoespressif8266/tools/sdk/include
 -IC:/Users/USER/.platformio/packages/framework-arduinoespressif8266/tools/sdk/libc/xtensa-lx106-elf/include
 -IC:/Users/USER/.platformio/packages/framework-arduinoespressif8266/cores/esp8266

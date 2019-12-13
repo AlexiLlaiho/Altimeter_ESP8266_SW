@@ -43,12 +43,38 @@ void Open_and_Write_File()
     else
     {
       Altitude dA;
-      Serial.println("Saving data in process: ");
+      #ifdef vDEBUG
+        Serial.println("Saving data in process: ");
+      #endif
       for (uint16 j = 0; j < 10000; j++)
       {
         f.println( dA.Flight_Data_Massive[j] );
       }
       dFile_recorded = 0x01;
       f.close();
+      #ifdef vDEBUG
+        Serial.println("Attantion! Data were saved!");
+      #endif
     }
+}
+
+void Read_Data()
+{
+  int xCnt = 0;
+  File f = SPIFFS.open("/data.txt", "r");
+  if (!f)
+  {
+    Serial.println("file open failed");
+  }
+  Serial.println("====== Reading from SPIFFS file =======");
+  while (f.available())
+  {
+    //Lets read line by line from the file
+    String line = f.readStringUntil('\n');
+    Serial.print(xCnt);
+    Serial.print("  ");
+    Serial.println(line);
+    xCnt++;
+  }
+  f.close();
 }

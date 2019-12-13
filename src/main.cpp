@@ -2,11 +2,11 @@
  * ESP8266 ALTIMETER for aircraft models 
  *
  */
- 
+
 #include "Arduino.h"
 #include "system_status.h"
 #include <ESP8266WiFi.h>
-#include <FS.h>   //Include File System Headers
+#include <FS.h> //Include File System Headers
 #include "Calculate_Alt.h"
 #include "Wire.h"
 #include "Ticker.h"
@@ -15,7 +15,7 @@
 #include "Calculate_Alt.h"
 
 uint16 Flight_Time[10000];
-extern int8_t dFile_recorded = 0x00;
+extern int8_t dFile_recorded;
 
 Altitude fD;
 Web_Graph wG;
@@ -36,18 +36,21 @@ void setup()
 }
 
 void loop()
-{  
+{
   while (WiFi.status() != WL_CONNECTED)
   {
+    dFile_recorded = 0x00;
     fD.Write_Data_to_Massive();
   }
-  Open_and_Write_File();
+  if (dFile_recorded == 0x00)
+  {
+    Open_and_Write_File();
+  }
   if (dFile_recorded == 0x01)
   {
     wG.main_web_cycle();
-  }  
+  }
 }
-
 
 void ICACHE_RAM_ATTR onTimerISR()
 {
@@ -56,13 +59,12 @@ void ICACHE_RAM_ATTR onTimerISR()
     digitalWrite(ledPin, HIGH);
     ledState = 1;
   }
-  else 
+  else
   {
     digitalWrite(ledPin, LOW);
     ledState = 0;
-  }    
+  }
 }
-
 
 void BMP_check_and_start()
 {
