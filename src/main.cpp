@@ -45,6 +45,7 @@ void loop()
   if (dFile_recorded == 0x00)
   {
     Open_and_Write_File();
+    HTTP_Start();
   }
   if (dFile_recorded == 0x01)
   {

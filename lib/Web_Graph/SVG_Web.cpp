@@ -155,6 +155,22 @@ void Web_Graph::Num_of_Elements()
   }
 }
 
+void HTTP_Start()
+{
+  if (mdns.begin("esp8266", WiFi.localIP()))
+  {
+    Serial.println("MDNS responder started");
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
+  }
+  server.on("/", handleRoot);
+  server.on("/test.svg", Polyline);
+  server.on("/inline", []() { server.send(200, "text/plain", "this works as well"); });
+  server.onNotFound(handleNotFound);
+  server.begin();
+  Serial.println("HTTP server started");
+}
+
 void SVG_Graph_Run()
 {
   // Serial.println("WiFi connected");                                // "Подключение к WiFi выполнено"

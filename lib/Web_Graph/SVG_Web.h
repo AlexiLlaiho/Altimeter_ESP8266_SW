@@ -42,7 +42,7 @@ void handleNotFound();
 void handleRoot();
 void Polyline();
 void SVG_Graph_Run();
-
+void HTTP_Start();
 
 #endif //  SVG_WEB_H
 
