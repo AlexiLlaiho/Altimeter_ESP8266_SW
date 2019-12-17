@@ -1,7 +1,7 @@
 #include "SVG_Web.h"
 
-extern uint16 Flight_Time[10000];
-uint16 Data_Mass[10000];
+extern uint16 Flight_Time[750];
+uint16 Data_Mass[750];
 uint16 Quantity_of_elements;
 
 MDNSResponder mdns;
@@ -29,8 +29,18 @@ void Web_Graph::WiFi_Start()
 
 void Web_Graph::main_web_cycle() 
 {
-  mdns.update();
-  server.handleClient();
+#ifdef vDEBUG
+  Altitude aA;
+  for (uint16_t k = 0; k < Quantity_of_data_points; k++)
+  {
+    Serial.print("X: ");
+    Serial.print(k);
+    Serial.print(" Y: ");
+    Serial.println(aA.Flight_Data_Massive[k]);
+  }
+#endif
+  //mdns.update();
+  //server.handleClient();
 }
 
 void Polyline()

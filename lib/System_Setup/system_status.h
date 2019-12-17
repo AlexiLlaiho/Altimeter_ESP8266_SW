@@ -9,8 +9,9 @@
 
 #define vDEBUG
 #define ledPin 2
-#define PC_resolution 1 //Phone 1
+#define Phone 1 //PC_resolution 1
 #define eWRITE 0x01
 #define dWRITE 0x00
+#define Quantity_of_data_points 750
 
 #endif //  SYSTEM_STATUS_H

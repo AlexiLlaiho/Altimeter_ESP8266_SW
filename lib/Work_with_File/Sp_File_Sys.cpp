@@ -46,9 +46,9 @@ void Open_and_Write_File()
       #ifdef vDEBUG
         Serial.println("Saving data in process: ");
       #endif
-      for (uint16 j = 0; j < 10000; j++)
+      for (uint16 j = 0; j < Quantity_of_data_points; j++)
       {
-        f.println( dA.Flight_Data_Massive[j] );
+        f.println(dA.Flight_Data_Massive[j]);
       }
       dFile_recorded = 0x01;
       f.close();

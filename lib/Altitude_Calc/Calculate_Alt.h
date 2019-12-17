@@ -34,7 +34,7 @@ public:
     void Write_Data_to_Massive();
 
     float Hight;    
-    uint16_t Flight_Data_Massive[10000];
+    uint16_t Flight_Data_Massive[750];
 };
 
 #endif //  ADAFRUIT_BMP085_H

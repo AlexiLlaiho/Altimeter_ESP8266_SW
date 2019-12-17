@@ -12,8 +12,10 @@ float Altitude::Calculate_Altitude()
   }
   // Serial.print("Temperature = ");
   #ifdef vDEBUG
-  Serial.print(bmp.readTemperature());
-  #endif
+    Serial.print("Temp is: ");
+    Serial.print(bmp.readTemperature());
+    Serial.print(";");
+#endif
   
 //   //Serial.println(" *C");
 
@@ -36,13 +38,13 @@ float Altitude::Calculate_Altitude()
 //   // vary with weather and such. If it is 1015 millibars
 //   // that is equal to 101500 Pascals.
 #ifdef vDEBUG
-Serial.print("  ");
-Serial.print(bmp.readAltitude(102276));
-Serial.print("  ");  
+  Serial.print("Hight is: ");
+  Serial.print(bmp.readAltitude(102276));
+  Serial.print("; ");
 #endif
 
 //   Serial.println(" meters");
-Hight = (bmp.readAltitude(102276));
+  Hight = (bmp.readAltitude(102276));
 //   Serial.println();
   delay(100);
 
@@ -50,21 +52,32 @@ Hight = (bmp.readAltitude(102276));
 }
 
 void Altitude::Write_Data_to_Massive()
-{  
-  Flight_Data_Massive[i] = Calculate_Altitude();
-  Flight_Time[i] = i;
+{
   #ifdef vDEBUG
-  Serial.println(Flight_Data_Massive[i]);
-  #endif
+    Serial.print("place number in massive i: ");
+    Serial.print(i);
+    Serial.print("; ");
+#endif
+
+  Flight_Data_Massive[i] =(uint16_t)Calculate_Altitude();
+  Flight_Time[i] = i;
   
-  if (i < 10000) 
+  #ifdef vDEBUG
+  Serial.print("current hight is: ");
+  Serial.print(Flight_Data_Massive[i]);
+  Serial.print(";");
+#endif
+
+  if (i < Quantity_of_data_points)
   {
     #ifdef vDEBUG
+    Serial.print(" i < 1000: ");
     Serial.println(i);
+    Serial.print(";");
     #endif
     ++i;
   }
-  else if (i == 10000)
+  else if (i == Quantity_of_data_points)
   {
     i = 0;
   }
