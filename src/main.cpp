@@ -14,7 +14,7 @@
 #include "Sp_File_Sys.h"
 #include "Calculate_Alt.h"
 
-uint16 Flight_Time[10000];
+uint16_t Flight_Time[10000];
 extern int8_t dFile_recorded;
 
 Altitude fD;

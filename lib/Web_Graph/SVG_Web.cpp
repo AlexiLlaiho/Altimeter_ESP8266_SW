@@ -3,6 +3,7 @@
 extern uint16 Flight_Time[750];
 uint16 Data_Mass[750];
 uint16 Quantity_of_elements;
+extern Altitude fD;
 
 MDNSResponder mdns;
 ESP8266WebServer server(80);
@@ -29,28 +30,29 @@ void Web_Graph::WiFi_Start()
 
 void Web_Graph::main_web_cycle() 
 {
-#ifdef vDEBUG
-  Altitude aA;
+#ifdef outputDEBUG
   for (uint16_t k = 0; k < Quantity_of_data_points; k++)
   {
     Serial.print("X: ");
     Serial.print(k);
     Serial.print(" Y: ");
-    Serial.println(aA.Flight_Data_Massive[k]);
+    Serial.println(fD.Flight_Data_Massive[k]);
   }
 #endif
-  //mdns.update();
-  //server.handleClient();
+#ifndef outputDEBUG
+  mdns.update();
+  server.handleClient();
+#endif
+  
 }
 
 void Polyline()
 { // This routine set up the Polygon SVG string for parsing to w3.org
-  Altitude aA;
   String out = "";
   uint16_t *p_xM;
   uint16_t *p_yM;
   p_xM = Flight_Time;
-  p_yM = aA.Flight_Data_Massive;
+  p_yM = fD.Flight_Data_Massive;
   char temp[120];
   out += out_b;
   out += "<g >\n"; // Start our data string
@@ -61,7 +63,7 @@ void Polyline()
                    // stroke-width=\"10\"            Draw outline with thickness of 10
                    // fill=\"Aqua\"                  Fill the inside with Aqua --- if you omit this the its filled with black by default!
                    //
-  for (uint16 i = 0; i < Quantity_of_elements; i++)
+  for (uint16 i = 0; i < Quantity_of_data_points; i++)
   {
     sprintf(temp, "<polyline points =\" %u, %u  %u, %u \" stroke=\"blue\" stroke-width =\"3\" /> \n", *(p_xM + i), *(p_yM + i), *(p_xM + (i + 1)), *(p_yM + (i + 1)));
     out += temp;
@@ -70,7 +72,7 @@ void Polyline()
   out += "</g>\n</svg>\n";                // close the SVG wrapper
   server.send(200, "image/svg+xml", out); /* and send it to http://www.w3.org/2000/svg */
 
-  delay(500); /*If you have a Sizable graphic then allow time for the response from w3.org before polling the site again (else things will break) */
+  delay(10000); /*If you have a Sizable graphic then allow time for the response from w3.org before polling the site again (else things will break) */
 }
 
 void handleRoot()

@@ -8,6 +8,7 @@
 #define SYSTEM_STATUS_H
 
 #define vDEBUG
+//#define outputDEBUG
 #define ledPin 2
 #define Phone 1 //PC_resolution 1
 #define eWRITE 0x01

@@ -53,7 +53,7 @@ float Altitude::Calculate_Altitude()
 
 void Altitude::Write_Data_to_Massive()
 {
-  #ifdef vDEBUG
+#ifdef vDEBUG
     Serial.print("place number in massive i: ");
     Serial.print(i);
     Serial.print("; ");
@@ -62,7 +62,7 @@ void Altitude::Write_Data_to_Massive()
   Flight_Data_Massive[i] =(uint16_t)Calculate_Altitude();
   Flight_Time[i] = i;
   
-  #ifdef vDEBUG
+#ifdef vDEBUG
   Serial.print("current hight is: ");
   Serial.print(Flight_Data_Massive[i]);
   Serial.print(";");
