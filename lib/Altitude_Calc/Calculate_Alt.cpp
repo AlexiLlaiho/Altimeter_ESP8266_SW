@@ -18,11 +18,11 @@ float Altitude::Calculate_Altitude()
 #endif
   
 //   //Serial.println(" *C");
-
-//   Serial.print("  Pressure = ");
-//   Serial.print(bmp.readPressure());
-//   //Serial.println(" Pa");
-
+#ifdef vDEBUG
+  Serial.print("  Pressure = ");
+  Serial.print(bmp.readPressure());
+  Serial.print(" Pa; ");
+#endif
 //   // Calculate altitude assuming 'standard' barometric
 //   // pressure of 1013.25 millibar = 101325 Pascal
 //   Serial.print("  Altitude = ");
@@ -38,7 +38,7 @@ float Altitude::Calculate_Altitude()
 //   // vary with weather and such. If it is 1015 millibars
 //   // that is equal to 101500 Pascals.
 #ifdef vDEBUG
-  Serial.print("Hight is: ");
+  Serial.print(" Hight is: ");
   Serial.print(bmp.readAltitude(102276));
   Serial.print("; ");
 #endif
@@ -54,7 +54,7 @@ float Altitude::Calculate_Altitude()
 void Altitude::Write_Data_to_Massive()
 {
 #ifdef vDEBUG
-    Serial.print("place number in massive i: ");
+    Serial.print("Massive[i]: ");
     Serial.print(i);
     Serial.print("; ");
 #endif
@@ -72,9 +72,9 @@ void Altitude::Write_Data_to_Massive()
   {
     #ifdef vDEBUG
     Serial.print(" i < 1000: ");
-    Serial.println(i);
-    Serial.print(";");
-    #endif
+    Serial.print(i);
+    Serial.println(";");
+#endif
     ++i;
   }
   else if (i == Quantity_of_data_points)
