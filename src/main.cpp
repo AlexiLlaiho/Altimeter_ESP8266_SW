@@ -39,14 +39,19 @@ void loop()
 {
   while (WiFi.status() != WL_CONNECTED)
   {
+    digitalWrite(2, HIGH);
     dFile_recorded = 0x00;
     fD.Write_Data_to_Massive();
+    delay(150);
+    digitalWrite(2, LOW);
   }
+
   if (dFile_recorded == 0x00)
   {
     Open_and_Write_File();
     HTTP_Start();
   }
+  
   if (dFile_recorded == 0x01)
   {
     wG.main_web_cycle();

@@ -40,38 +40,36 @@ void Web_Graph::main_web_cycle()
   }
 #endif
 #ifndef outputDEBUG
-  mdns.update();
+  // mdns.update();
   server.handleClient();
 #endif
   
 }
 
-void Polyline()
-{ // This routine set up the Polygon SVG string for parsing to w3.org
+void Polyline() // This routine set up the Polygon SVG string for parsing to w3.org
+{ 
   String out = "";
   uint16_t *p_xM;
   uint16_t *p_yM;
   p_xM = Flight_Time;
   p_yM = fD.Flight_Data_Massive;
-  char temp[120];
+  char temp[2000];
   out += out_b;
-  out += "<g >\n"; // Start our data string
-                   // As we are including some variables into the Polygon code we need to lay it into a temporary buffer ( temp ), be sure that you make it big enough.
-                   // polygon =                      the command for polygons (this is different to line plotting)
-                   // points=\"200,20,80,396         Plot points x,y to x1,y1 etcetcetc
-                   // stroke=\"black\"               Draw outline of Polygon in black
-                   // stroke-width=\"10\"            Draw outline with thickness of 10
-                   // fill=\"Aqua\"                  Fill the inside with Aqua --- if you omit this the its filled with black by default!
-                   //
-  for (uint16 i = 0; i < Quantity_of_data_points; i++)
+  out += "<g >\n  <polyline points =\" "; // Start our data string
+  #ifdef vDEBUG
+    Serial.println("Pointers were created..");
+    delay(2000);
+  #endif
+  for (uint16_t i = 0; i < Quantity_of_data_points; i++) //Quantity_of_data_points
   {
-    sprintf(temp, "<polyline points =\" %u, %u  %u, %u \" stroke=\"blue\" stroke-width =\"3\" /> \n", *(p_xM + i), *(p_yM + i), *(p_xM + (i + 1)), *(p_yM + (i + 1)));
-    out += temp;
-    // Debug Serial.println(out);
+    sprintf(temp, "%u,%u  %u,%u ", *(p_xM + i), *(p_yM + i), *(p_xM + (i + 1)), *(p_yM + (i + 1)));
+    out += temp;      
   }
-  out += "</g>\n</svg>\n";                // close the SVG wrapper
+  out += "\" stroke=\"blue\" stroke-width=\"3\" />\n</g>\n</svg>\n"; //close the SVG wrapper
+#ifdef vDEBUG
+      Serial.println(out);
+    #endif
   server.send(200, "image/svg+xml", out); /* and send it to http://www.w3.org/2000/svg */
-
   delay(10000); /*If you have a Sizable graphic then allow time for the response from w3.org before polling the site again (else things will break) */
 }
 
@@ -175,6 +173,10 @@ void HTTP_Start()
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
   }
+  #ifdef vDEBUG
+    delay(5000);
+    Serial.println("MDNS is working");
+  #endif
   server.on("/", handleRoot);
   server.on("/test.svg", Polyline);
   server.on("/inline", []() { server.send(200, "text/plain", "this works as well"); });

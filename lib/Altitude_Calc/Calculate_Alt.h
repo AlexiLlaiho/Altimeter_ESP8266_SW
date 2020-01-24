@@ -32,8 +32,9 @@ class Altitude
 public:
     float Calculate_Altitude();
     void Write_Data_to_Massive();
+    float Pressure_in_Start();
 
-    float Hight;    
+    float Hight;
     uint16_t Flight_Data_Massive[750];
 };
 

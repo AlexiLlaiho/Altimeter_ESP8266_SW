@@ -8,21 +8,24 @@ float Altitude::Calculate_Altitude()
 {
   if (!bmp.begin()) {
   	Serial.println("Could not find a valid BMP085 sensor, check wiring!");
-    while (1) {}
+    while (1) 
+    {
+      Serial.println("Waiting a sensor..");
+    }
   }
   // Serial.print("Temperature = ");
   #ifdef vDEBUG
     Serial.print("Temp is: ");
     Serial.print(bmp.readTemperature());
     Serial.print(";");
-#endif
+  #endif
   
 //   //Serial.println(" *C");
-#ifdef vDEBUG
-  Serial.print("  Pressure = ");
-  Serial.print(bmp.readPressure());
-  Serial.print(" Pa; ");
-#endif
+  #ifdef vDEBUG
+    Serial.print("  Pressure = ");
+    Serial.print(bmp.readPressure());
+    Serial.print(" Pa; ");
+  #endif
 //   // Calculate altitude assuming 'standard' barometric
 //   // pressure of 1013.25 millibar = 101325 Pascal
 //   Serial.print("  Altitude = ");
@@ -71,14 +74,27 @@ void Altitude::Write_Data_to_Massive()
   if (i < Quantity_of_data_points)
   {
     #ifdef vDEBUG
-    Serial.print(" i < 1000: ");
-    Serial.print(i);
-    Serial.println(";");
-#endif
+      Serial.print(" i < 1000: ");
+      Serial.print(i);
+      Serial.println(";");
+    #endif
     ++i;
   }
   else if (i == Quantity_of_data_points)
   {
     i = 0;
+  }
+}
+
+float Altitude::Pressure_in_Start()
+{
+  int32_t PrS[250], PrS_old;
+  for (uint8_t j = 0; j < 250; j++)
+  {
+    PrS[j] = bmp.readPressure();
+  }
+  for (uint8_t k = 0; k < 80; k++)
+  {
+    PrS_old = PrS[k + 3];
   }
 }
