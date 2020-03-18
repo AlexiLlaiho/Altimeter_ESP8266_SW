@@ -26,6 +26,7 @@
 #include "system_status.h"
 #include "Wire.h"
 #include "Adafruit_BMP085.h"
+#include <MS5611.h>
 
 class Altitude
 {
@@ -35,6 +36,8 @@ public:
     float Pressure_in_Start();
 
     float Hight;
+    double mPressure;
+    double mSeaLevelPressure = 101325;
     uint16_t Flight_Data_Massive[750];
 };
 

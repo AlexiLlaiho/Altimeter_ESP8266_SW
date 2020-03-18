@@ -13,6 +13,7 @@
 #include "SVG_Web.h"
 #include "Sp_File_Sys.h"
 #include "Calculate_Alt.h"
+#include <MS5611.h>
 
 uint16_t Flight_Time[10000];
 extern int8_t dFile_recorded;
@@ -22,14 +23,14 @@ Web_Graph wG;
 char ledState = 0;
 
 void WiFi_Start(void);
-void BMP_check_and_start(void);
+void Sensors_check_and_start(void);
 void GPIO_TIM_setup(void);
 
 void setup()
 {
   delay(1000);
   Serial.begin(115200);
-  BMP_check_and_start();
+  Sensors_check_and_start();
   Initialize_File_System();
   GPIO_TIM_setup();
   wG.WiFi_Start();
@@ -72,11 +73,13 @@ void ICACHE_RAM_ATTR onTimerISR()
   }
 }
 
-void BMP_check_and_start()
+void Sensors_check_and_start()
 {
   Adafruit_BMP085 t;
+  MS5611 ams;
 
   Wire.begin(4, 5);
+#ifdef bSensor
   if (!t.begin())
   {
     Serial.println("Could not find a valid BMP085 sensor, check wiring!");
@@ -84,6 +87,16 @@ void BMP_check_and_start()
     {
     }
   }
+#endif
+#ifdef mSensor
+  if (!ams.begin())
+  {
+    Serial.println("Could not find a valid MS5611 sensor, check wiring!");
+    while (1)
+    {
+    }
+  }
+#endif
 }
 
 void GPIO_TIM_setup()

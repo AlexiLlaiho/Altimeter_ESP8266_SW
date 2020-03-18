@@ -14,5 +14,7 @@
 #define eWRITE 0x01
 #define dWRITE 0x00
 #define Quantity_of_data_points 750
+#define mSensor 1
+// #define bSensor 1
 
 #endif //  SYSTEM_STATUS_H

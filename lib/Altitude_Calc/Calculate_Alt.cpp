@@ -1,31 +1,47 @@
 #include "Calculate_Alt.h"
 
 Adafruit_BMP085 bmp;
+MS5611 smp;
 extern uint16 Flight_Time[10000];
 uint16_t i = 0;
 
 float Altitude::Calculate_Altitude()
 {
-  if (!bmp.begin()) {
-  	Serial.println("Could not find a valid BMP085 sensor, check wiring!");
-    while (1) 
+#ifdef bSensor
+  if (!bmp.begin())
+  {
+    Serial.println("Could not find a valid BMP085 sensor, check wiring!");
+    while (1)
     {
       Serial.println("Waiting a sensor..");
     }
   }
-  // Serial.print("Temperature = ");
-  #ifdef vDEBUG
-    Serial.print("Temp is: ");
-    Serial.print(bmp.readTemperature());
-    Serial.print(";");
-  #endif
-  
-//   //Serial.println(" *C");
-  #ifdef vDEBUG
-    Serial.print("  Pressure = ");
-    Serial.print(bmp.readPressure());
-    Serial.print(" Pa; ");
-  #endif
+#endif
+
+// Serial.print("Temperature = ");
+#ifdef vDEBUG
+  Serial.print("Temp is: ");
+#ifdef bSensor
+  Serial.print(bmp.readTemperature());
+#else
+  Serial.print(smp.readTemperature());
+#endif
+  Serial.print(";");
+#endif
+
+ //Serial.println(" *C");
+#ifdef vDEBUG
+  Serial.print("  Pressure = ");
+#ifdef bSensor
+  Serial.print(bmp.readPressure());
+#else
+  Serial.print(smp.readPressure());
+#endif
+  Serial.print(" Pa; ");
+#endif
+
+mPressure = smp.readPressure();
+
 //   // Calculate altitude assuming 'standard' barometric
 //   // pressure of 1013.25 millibar = 101325 Pascal
 //   Serial.print("  Altitude = ");
@@ -42,15 +58,20 @@ float Altitude::Calculate_Altitude()
 //   // that is equal to 101500 Pascals.
 #ifdef vDEBUG
   Serial.print(" Hight is: ");
+#ifdef bSensor
   Serial.print(bmp.readAltitude(102276));
+#else
+  Serial.print(smp.getAltitude(mPressure, mSeaLevelPressure));
+#endif
   Serial.print("; ");
 #endif
 
-//   Serial.println(" meters");
+#ifdef bSensor
   Hight = (bmp.readAltitude(102276));
-//   Serial.println();
+  #else
+  Hight = (smp.getAltitude(mPressure, mSeaLevelPressure));
+#endif
   delay(100);
-
   return Hight;
 }
 
@@ -91,7 +112,11 @@ float Altitude::Pressure_in_Start()
   int32_t PrS[250], PrS_old;
   for (uint8_t j = 0; j < 250; j++)
   {
+#ifdef bSensor
     PrS[j] = bmp.readPressure();
+#else
+    PrS[j] = smp.readPressure();
+#endif
   }
   for (uint8_t k = 0; k < 80; k++)
   {
