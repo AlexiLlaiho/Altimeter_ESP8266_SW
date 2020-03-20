@@ -33,12 +33,15 @@ class Altitude
 public:
     float Calculate_Altitude();
     void Write_Data_to_Massive();
-    float Pressure_in_Start();
+    void Pressure_in_Start();
 
     float Hight;
     double mPressure;
-    double mSeaLevelPressure = 101325;
+    double mSeaLevelPressure;
     uint16_t Flight_Data_Massive[750];
+    double SPP;
 };
+
+void smooth(double *input, double *output, int n, int window);
 
 #endif //  ADAFRUIT_BMP085_H

@@ -17,6 +17,7 @@
 
 uint16_t Flight_Time[10000];
 extern int8_t dFile_recorded;
+extern double SPP; //start pressure point
 
 Altitude fD;
 Web_Graph wG;
@@ -89,13 +90,16 @@ void Sensors_check_and_start()
   }
 #endif
 #ifdef mSensor
-  if (!ams.begin())
+  if (!ams.begin(MS5611_ULTRA_HIGH_RES))
   {
     Serial.println("Could not find a valid MS5611 sensor, check wiring!");
     while (1)
     {
     }
   }
+  Serial.println("Start......");
+  delay(1000);
+  fD.Pressure_in_Start();
 #endif
 }
 

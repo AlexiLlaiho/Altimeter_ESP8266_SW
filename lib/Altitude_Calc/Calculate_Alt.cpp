@@ -17,8 +17,6 @@ float Altitude::Calculate_Altitude()
     }
   }
 #endif
-
-// Serial.print("Temperature = ");
 #ifdef vDEBUG
   Serial.print("Temp is: ");
 #ifdef bSensor
@@ -35,25 +33,12 @@ float Altitude::Calculate_Altitude()
 #ifdef bSensor
   Serial.print(bmp.readPressure());
 #else
-  Serial.print(smp.readPressure());
+  Serial.print(smp.readPressure(true));
 #endif
   Serial.print(" Pa; ");
 #endif
 
-mPressure = smp.readPressure();
-
-//   // Calculate altitude assuming 'standard' barometric
-//   // pressure of 1013.25 millibar = 101325 Pascal
-//   Serial.print("  Altitude = ");
-  // Serial.print(bmp.readAltitude());
-//   //Serial.println(" meters");
-
-//   Serial.print("  Pressure at sealevel (calculated) = ");
-//   Serial.print(bmp.readSealevelPressure());
-//   //Serial.print(" Pa");
-
-//   // you can get a more precise measurement of altitude
-//   // if you know the current sea level pressure which will
+mPressure = smp.readPressure(true);
 //   // vary with weather and such. If it is 1015 millibars
 //   // that is equal to 101500 Pascals.
 #ifdef vDEBUG
@@ -61,7 +46,7 @@ mPressure = smp.readPressure();
 #ifdef bSensor
   Serial.print(bmp.readAltitude(102276));
 #else
-  Serial.print(smp.getAltitude(mPressure, mSeaLevelPressure));
+  Serial.print(smp.getAltitude(mPressure, SPP));
 #endif
   Serial.print("; ");
 #endif
@@ -69,7 +54,7 @@ mPressure = smp.readPressure();
 #ifdef bSensor
   Hight = (bmp.readAltitude(102276));
   #else
-  Hight = (smp.getAltitude(mPressure, mSeaLevelPressure));
+  Hight = (smp.getAltitude(mPressure, SPP));
 #endif
   delay(100);
   return Hight;
@@ -107,19 +92,58 @@ void Altitude::Write_Data_to_Massive()
   }
 }
 
-float Altitude::Pressure_in_Start()
+void Altitude::Pressure_in_Start()
 {
-  int32_t PrS[250], PrS_old;
-  for (uint8_t j = 0; j < 250; j++)
+  // int32_t PrS[250], PrS_old;
+  double PrS[250], PrS_O[250], PSP;
+  for (uint8_t j = 0; j < 50; j++)
   {
 #ifdef bSensor
     PrS[j] = bmp.readPressure();
 #else
-    PrS[j] = smp.readPressure();
+    Serial.println(smp.readPressure(true));
+    delay(500);
 #endif
   }
-  for (uint8_t k = 0; k < 80; k++)
+}
+
+void smooth(double *input, double *output, int n, int window)
+{
+  int i, j, z, k1, k2, hw;
+  double tmp;
+  if (fmod(window, 2) == 0)
   {
-    PrS_old = PrS[k + 3];
+    window++;
+  }
+  hw = (window - 1) / 2;
+  output[0] = input[0];
+
+  for (i = 1; i < n; i++)
+  {
+    tmp = 0;
+    if (i < hw)
+    {
+      k1 = 0;
+      k2 = 2 * i;
+      z = k2 + 1;
+    }
+    else if ((i + hw) > (n - 1))
+    {
+      k1 = i - n + i + 1;
+      k2 = n - 1;
+      z = k2 - k1 + 1;
+    }
+    else
+    {
+      k1 = i - hw;
+      k2 = i + hw;
+      z = window;
+    }
+
+    for (j = k1; j <= k2; j++)
+    {
+      tmp = tmp + input[j];
+    }
+    output[i] = tmp / z;
   }
 }
