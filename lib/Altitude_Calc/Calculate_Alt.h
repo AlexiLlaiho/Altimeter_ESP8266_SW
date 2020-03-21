@@ -40,6 +40,7 @@ public:
     double mSeaLevelPressure;
     uint16_t Flight_Data_Massive[750];
     double SPP;
+    double rP;
 };
 
 void smooth(double *input, double *output, int n, int window);

@@ -27,7 +27,6 @@ float Altitude::Calculate_Altitude()
   Serial.print(";");
 #endif
 
- //Serial.println(" *C");
 #ifdef vDEBUG
   Serial.print("  Pressure = ");
 #ifdef bSensor
@@ -39,8 +38,7 @@ float Altitude::Calculate_Altitude()
 #endif
 
 mPressure = smp.readPressure(true);
-//   // vary with weather and such. If it is 1015 millibars
-//   // that is equal to 101500 Pascals.
+
 #ifdef vDEBUG
   Serial.print(" Hight is: ");
 #ifdef bSensor
@@ -93,18 +91,11 @@ void Altitude::Write_Data_to_Massive()
 }
 
 void Altitude::Pressure_in_Start()
-{
-  // int32_t PrS[250], PrS_old;
-  double PrS[250], PrS_O[250], PSP;
-  for (uint8_t j = 0; j < 50; j++)
-  {
-#ifdef bSensor
-    PrS[j] = bmp.readPressure();
-#else
-    Serial.println(smp.readPressure(true));
-    delay(500);
-#endif
-  }
+{  
+  MS5611 dmp;
+    
+  Serial.println("Calling a Pressure_in_Start function");
+  rP = dmp.readPressure(true);
 }
 
 void smooth(double *input, double *output, int n, int window)

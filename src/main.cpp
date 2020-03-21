@@ -17,7 +17,7 @@
 
 uint16_t Flight_Time[10000];
 extern int8_t dFile_recorded;
-extern double SPP; //start pressure point
+double referencePressure;
 
 Altitude fD;
 Web_Graph wG;
@@ -78,7 +78,8 @@ void Sensors_check_and_start()
 {
   Adafruit_BMP085 t;
   MS5611 ams;
-
+  Altitude dMS;
+  double SPiP;
   Wire.begin(4, 5);
 #ifdef bSensor
   if (!t.begin())
@@ -98,8 +99,10 @@ void Sensors_check_and_start()
     }
   }
   Serial.println("Start......");
-  delay(1000);
-  fD.Pressure_in_Start();
+  delay(500);
+  referencePressure = ams.readPressure(true);
+  Serial.println(referencePressure);
+  delay(500);
 #endif
 }
 
