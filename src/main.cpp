@@ -13,11 +13,11 @@
 #include "SVG_Web.h"
 #include "Sp_File_Sys.h"
 #include "Calculate_Alt.h"
-#include <MS5611.h>
+#include "MS5611.h"
 
 uint16_t Flight_Time[10000];
 extern int8_t dFile_recorded;
-double referencePressure;
+
 
 Altitude fD;
 Web_Graph wG;
@@ -31,6 +31,7 @@ void setup()
 {
   delay(1000);
   Serial.begin(115200);
+  Wire.begin(4, 5);
   Sensors_check_and_start();
   Initialize_File_System();
   GPIO_TIM_setup();
@@ -76,12 +77,8 @@ void ICACHE_RAM_ATTR onTimerISR()
 
 void Sensors_check_and_start()
 {
-  Adafruit_BMP085 t;
-  MS5611 ams;
-  Altitude dMS;
-  double SPiP;
-  Wire.begin(4, 5);
 #ifdef bSensor
+Adafruit_BMP085 t;
   if (!t.begin())
   {
     Serial.println("Could not find a valid BMP085 sensor, check wiring!");
@@ -91,6 +88,9 @@ void Sensors_check_and_start()
   }
 #endif
 #ifdef mSensor
+MS5611 ams;
+Altitude aTD;
+double referencePressure;
   if (!ams.begin(MS5611_ULTRA_HIGH_RES))
   {
     Serial.println("Could not find a valid MS5611 sensor, check wiring!");
@@ -98,12 +98,14 @@ void Sensors_check_and_start()
     {
     }
   }
-  Serial.println("Start......");
+  Serial.println(" Start: ");
   delay(500);
   referencePressure = ams.readPressure(true);
   Serial.println(referencePressure);
   delay(500);
-#endif
+  Serial.println(aTD.Pressure_in_Start());
+  delay(1500);
+#endif  
 }
 
 void GPIO_TIM_setup()

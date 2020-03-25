@@ -25,15 +25,17 @@
 #endif
 #include "system_status.h"
 #include "Wire.h"
+#ifdef bSensor
 #include "Adafruit_BMP085.h"
-#include <MS5611.h>
+#endif
+#include "MS5611.h"
 
 class Altitude
 {
 public:
     float Calculate_Altitude();
     void Write_Data_to_Massive();
-    void Pressure_in_Start();
+    double Pressure_in_Start();
 
     float Hight;
     double mPressure;
@@ -41,6 +43,7 @@ public:
     uint16_t Flight_Data_Massive[750];
     double SPP;
     double rP;
+
 };
 
 void smooth(double *input, double *output, int n, int window);

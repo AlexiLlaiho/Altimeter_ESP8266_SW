@@ -1,9 +1,12 @@
 #include "Calculate_Alt.h"
 
+#ifdef bSensor
 Adafruit_BMP085 bmp;
+#endif
 MS5611 smp;
 extern uint16 Flight_Time[10000];
 uint16_t i = 0;
+
 
 float Altitude::Calculate_Altitude()
 {
@@ -16,6 +19,15 @@ float Altitude::Calculate_Altitude()
       Serial.println("Waiting a sensor..");
     }
   }
+#else
+  if (!smp.begin(MS5611_ULTRA_HIGH_RES))
+  {
+    Serial.println("Could not find a valid MS5611 sensor, check wiring!");
+    while (1)
+    {
+      Serial.println("Waiting a sensor..");
+    }
+  }  
 #endif
 #ifdef vDEBUG
   Serial.print("Temp is: ");
@@ -90,12 +102,24 @@ void Altitude::Write_Data_to_Massive()
   }
 }
 
-void Altitude::Pressure_in_Start()
-{  
-  MS5611 dmp;
-    
+double Altitude::Pressure_in_Start()
+{
+  #ifdef mSensor
+   if (!smp.begin(MS5611_ULTRA_HIGH_RES))
+  {   
+    while (1)
+    {
+      Serial.println("Waiting a sensor..");
+    }
+  } 
+  #endif
   Serial.println("Calling a Pressure_in_Start function");
-  rP = dmp.readPressure(true);
+  double realTemperature = smp.readTemperature();
+  Serial.println(realTemperature);
+  long realPressure = smp.readPressure();
+  Serial.println(realPressure);
+  rP = smp.readPressure(true); 
+  return rP;
 }
 
 void smooth(double *input, double *output, int n, int window)
