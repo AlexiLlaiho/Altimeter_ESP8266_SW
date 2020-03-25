@@ -37,13 +37,13 @@ public:
     void Write_Data_to_Massive();
     double Pressure_in_Start();
 
-    float Hight;
+    double Temp, Hight;
     double mPressure;
     double mSeaLevelPressure;
     uint16_t Flight_Data_Massive[750];
     double SPP;
     double rP;
-
+    
 };
 
 void smooth(double *input, double *output, int n, int window);

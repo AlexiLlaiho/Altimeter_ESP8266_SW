@@ -88,21 +88,7 @@ Adafruit_BMP085 t;
   }
 #endif
 #ifdef mSensor
-MS5611 ams;
 Altitude aTD;
-double referencePressure;
-  if (!ams.begin(MS5611_ULTRA_HIGH_RES))
-  {
-    Serial.println("Could not find a valid MS5611 sensor, check wiring!");
-    while (1)
-    {
-    }
-  }
-  Serial.println(" Start: ");
-  delay(500);
-  referencePressure = ams.readPressure(true);
-  Serial.println(referencePressure);
-  delay(500);
   Serial.println(aTD.Pressure_in_Start());
   delay(1500);
 #endif  

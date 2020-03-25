@@ -53,7 +53,7 @@ class MS5611
 	uint32_t readRawPressure(void);
 	double readTemperature(bool compensation = false);
 	int32_t readPressure(bool compensation = false);
-	double getAltitude(double pressure, double seaLevelPressure = 101325);
+	double getAltitude(double pressure, double seaLevelPressure = 102965);
 	double getSeaLevel(double pressure, double altitude);
 	void setOversampling(ms5611_osr_t osr);
 	ms5611_osr_t getOversampling(void);
