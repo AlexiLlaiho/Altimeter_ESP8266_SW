@@ -5,6 +5,7 @@ Adafruit_BMP085 bmp;
 #endif
 MS5611 smp;
 extern uint16 Flight_Time[10000];
+extern double dPS;
 uint16_t i = 0;
 
 
@@ -20,38 +21,38 @@ float Altitude::Calculate_Altitude()
   } 
 Temp = smp.readTemperature(true);  
 mPressure = smp.readPressure(true);
-Hight = smp.getAltitude(mPressure);
+Hight = smp.getAltitude(mPressure, dPS);
 #ifdef vDEBUG
-  Serial.print("mPressure is: ");
+  Serial.print("mPres: ");
   Serial.print(mPressure);
   Serial.print(" Pa; ");
-  Serial.print(" Temp is: ");
+  Serial.print(" Temp: ");
   Serial.print(Temp);
   Serial.print(";");
-  Serial.print(" Hight is: ");
+  Serial.print(" Hight: ");
   Serial.print(Hight); 
   Serial.print("; ");
-  Serial.print(" Pressure_in_Start point is: ");
-  Serial.print(rP); 
+  Serial.print(" PresStP: ");
+  Serial.print(dPS); 
   Serial.print("; ");
 #endif
-  delay(100);
+  // delay(100);
   return Hight;
 }
 
 void Altitude::Write_Data_to_Massive()
 {
 #ifdef vDEBUG
-    Serial.print("Massive[i]: ");
+    Serial.print("Mas[i]: ");
     Serial.print(i);
     Serial.print("; ");
 #endif
 
-  Flight_Data_Massive[i] =(uint16_t)Calculate_Altitude();
-  Flight_Time[i] = i;
-  
+Flight_Data_Massive[i] = (uint16_t)Calculate_Altitude();
+Flight_Time[i] = i;
+
 #ifdef vDEBUG
-  Serial.print("current hight is: ");
+  Serial.print("cur_H: ");
   Serial.print(Flight_Data_Massive[i]);
   Serial.print(";");
 #endif
@@ -83,7 +84,8 @@ double Altitude::Pressure_in_Start()
   } 
   #endif
   Serial.println("Pressure_in_Start: ");
-  rP = smp.readPressure(true); 
+  rP = smp.readPressure(true);
+  dPS = rP; 
   return rP;
 }
 

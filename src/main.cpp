@@ -22,6 +22,7 @@ extern int8_t dFile_recorded;
 Altitude fD;
 Web_Graph wG;
 char ledState = 0;
+double dPS;
 
 void WiFi_Start(void);
 void Sensors_check_and_start(void);
@@ -45,7 +46,7 @@ void loop()
     digitalWrite(2, HIGH);
     dFile_recorded = 0x00;
     fD.Write_Data_to_Massive();
-    delay(150);
+    // delay(150);
     digitalWrite(2, LOW);
   }
 
