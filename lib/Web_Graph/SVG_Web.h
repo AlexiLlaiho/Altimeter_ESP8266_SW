@@ -33,7 +33,7 @@ public:
     void WiFi_Start();
 
     float Hight;
-    const char *ssid = "bb-alex";
+    const char *ssid = "dlink";
     const char *password = "AuroraSky1819";
     float fData_Mass[3] = {2.34, 2.89, 5.62};
 };
@@ -41,7 +41,7 @@ public:
 void handleNotFound();
 void handleRoot();
 void Polyline();
-void SVG_Graph_Run();
+void SVG_Graph();
 void HTTP_Start();
 
 #endif //  SVG_WEB_H

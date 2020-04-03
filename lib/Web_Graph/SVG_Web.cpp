@@ -165,6 +165,56 @@ void Web_Graph::Num_of_Elements()
   }
 }
 
+void SVG_Graph()
+{
+  String out = "";
+  uint16_t *p_xM;
+  uint16_t *p_yM;
+  p_xM = Flight_Time;
+  p_yM = fD.Flight_Data_Massive;
+  char temp[2000];  
+out += "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"580\" height=\"400\" >\n ";
+    out += "<defs>\n";
+      out += "<filter height=\"200%\" width=\"200%\" y=\"-50%\" x=\"-50%\" id=\"svg_2_blur\">\n";
+        out += " <feGaussianBlur stdDeviation=\"3.5\" in=\"SourceGraphic\"/>\n";
+      out += "</filter>\n";
+    out += "</defs>\n";
+  out += "<g>\n";
+    out += " <title>background</title>\n";
+    out += "<rect fill=\"#fcf5d9\" id=\"canvas_background\" height=\"402\" width=\"582\" y=\"-1\" x=\"-1\"/> \n";
+      out += "<g display=\"none\" overflow=\"visible\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\" id=\"canvasGrid\">\n";
+        out += " <rect fill=\"url(#gridpattern)\" stroke-width=\"0\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\"/>\n";
+      out += "</g>  \n"; 
+  out += " </g>   \n"; 
+  out += "<g>  \n"; 
+    out += " <title>Layer 1</title>\n";
+    out += " <rect id=\"svg_1\" height=\"200\" width=\"400\" y=\"70\" x=\"65\" stroke-width=\"1.5\" stroke=\"#000\" fill=\"#BBBBBB\"/> \n";
+    out += " <line filter=\"url(#svg_2_blur)\" stroke-linecap=\"null\" stroke-linejoin=\"null\" id=\"svg_2\" y2=\"205.450012\" x2=\"465.5\" y1=\"205.450012\" x1=\"65.5\" stroke-opacity=\"null\" stroke-width=\"1.5\" stroke=\"#000\" fill=\"none\"/>\n";
+    out += " <text font-weight=\"bold\" font-style=\"italic\" xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Trebuchet MS', Gadget, sans-serif\" font-size=\"21\" id=\"svg_3\" y=\"58.450012\" x=\"79.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\">График изменения высоты полета</text>\n";
+    out += " <text font-style=\"italic\" xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Times New Roman', Times, serif\" font-size=\"18\" id=\"svg_4\" y=\"290.450012\" x=\"312.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\">Время полета в сек.</text>\n";
+    out += " <text font-weight=\"normal\" font-style=\"italic\" transform=\"rotate(-90, 48.9833, 141.45)\" xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Times New Roman', Times, serif\" font-size=\"18\" id=\"svg_5\" y=\"147.450012\" x=\"-19.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\">Высота в метрах</text>\n";
+    out += " <text xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Times New Roman', Times, serif\" font-size=\"21\" id=\"svg_6\" y=\"327.450012\" x=\"67.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\"> \n"; 
+        sprintf(temp, "Максимальная высота: %d", 125);
+        out += temp;
+    out += " </text>\n";     
+    out += " <text xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Times New Roman', Times, serif\" font-size=\"21\" id=\"svg_7\" y=\"358.450012\" x=\"68.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\"> \n";
+        sprintf(temp, "Атмосферное давление в точке старта: %d", 101123);
+        out += temp;       
+    out += " </text>\n";    
+  out += "</g>\n";
+  out += "<g stroke=\"black\">\n";
+      for (uint16_t i = 0; i < 2; i++) //Quantity_of_data_points
+      {        
+        // sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1\" />\n", *(p_xM + i), *(p_yM + i), *(p_xM + (i + 1)), *(p_yM + (i + 1))); 
+        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1\" />\n", 200, 200, 450, 200);       
+        out += temp;      
+      }      
+  out += "</g>\n";
+out += "</svg>\n";
+  
+  server.send(200, "image/svg+xml", out);
+}
+
 void HTTP_Start()
 {
   if (mdns.begin("esp8266", WiFi.localIP()))
@@ -173,93 +223,11 @@ void HTTP_Start()
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
   }
-  #ifdef vDEBUG
-    delay(5000);
-    Serial.println("MDNS is working");
-  #endif
+  Serial.println("MDNS is working");
   server.on("/", handleRoot);
-  server.on("/test.svg", Polyline);
+  server.on("/test.svg", SVG_Graph);
   server.on("/inline", []() { server.send(200, "text/plain", "this works as well"); });
   server.onNotFound(handleNotFound);
   server.begin();
   Serial.println("HTTP server started");
-}
-
-void SVG_Graph_Run()
-{
-  // Serial.println("WiFi connected");                                // "Подключение к WiFi выполнено"
-  // server.begin();                                                  // запускаем веб-сервер:
-  // Serial.println("Web server running. Waiting for the ESP IP..."); // "Веб-сервер запущен. Ожидание IP-адреса ESP..."
-  // delay(10000);
-  // Serial.println(WiFi.status());
-  // Serial.println(WiFi.localIP()); // печатаем IP-адрес ESP:
-
-  //  else if (Quantity_of_Pressing == 2)
-  //  {
-  //    Serial.println("Mode_2");
-  //    timer1_write(900000);
-  //    File f = SPIFFS.open(filename, "r"); //Read File data
-  //    if (!f)
-  //    {
-  //      Serial.println("file open failed");
-  //    }
-  //    else
-  //    {
-  //      for (int i = 0; i < f.size(); i++) //Read upto complete file size
-  //      {
-  //        Serial.print((char)f.read());
-  //      }
-  //      f.close(); //Close file
-  //      Serial.println("File Closed");
-  //      Quantity_of_Pressing = 0;
-  //    }
-  //  }
-
-  //  else if (Quantity_of_Pressing == 3)
-  //  {
-  // начинаем прослушку входящих клиентов:
-  // WiFiClient client = server.available();
-
-  // if (client)
-  // {
-  //   Serial.println("New client"); //  "Новый клиент"
-  //   // создаем переменную типа «boolean»,
-  //   // чтобы определить конец HTTP-запроса:
-  //   boolean blank_line = true;
-  //   while (client.connected())
-  //   {
-  //     if (client.available())
-  //     {
-  //       char c = client.read();
-
-  //       if (c == '\n' && blank_line)
-  //       {
-  //         //  getTemperature();
-  //         client.println("HTTP/1.1 200 OK");
-  //         client.println("Content-Type: text/html");
-  //         client.println("Connection: close");
-  //         client.println();
-  //         // веб-страница с данными о температуре:
-  //         client.println("<!DOCTYPE HTML>");
-  //         client.println("<html>");
-  //         client.println("<head></head><body><h1>Altimeter - Hight</h1><h3>Hight in Meters: ");
-  //         client.println(A_p.Calculate_Altitude());
-  //         break;
-  //       }
-  //       if (c == '\n')
-  //       {
-  //         // если обнаружен переход на новую строку:
-  //         blank_line = true;
-  //       }
-  //       else if (c != '\r')
-  //       {
-  //         // если в текущей строчке найден символ:
-  //         blank_line = false;
-  //       }
-  //     }
-  //   }
-  //   delay(1);
-  //   client.stop();
-  //   Serial.println("Client disconnected.");
-  // }
 }
