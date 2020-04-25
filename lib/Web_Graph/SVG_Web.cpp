@@ -1,8 +1,10 @@
 #include "SVG_Web.h"
 
+extern double dPS;
 extern uint16 Flight_Time[750];
 uint16 Data_Mass[750];
 uint16 Quantity_of_elements;
+uint8_t GrPart = 0; //Вывод нужной части графика
 extern Altitude fD;
 
 MDNSResponder mdns;
@@ -30,20 +32,8 @@ void Web_Graph::WiFi_Start()
 
 void Web_Graph::main_web_cycle() 
 {
-#ifdef outputDEBUG
-  for (uint16_t k = 0; k < Quantity_of_data_points; k++)
-  {
-    Serial.print("X: ");
-    Serial.print(k);
-    Serial.print(" Y: ");
-    Serial.println(fD.Flight_Data_Massive[k]);
-  }
-#endif
-#ifndef outputDEBUG
-  // mdns.update();
-  server.handleClient();
-#endif
-  
+  mdns.update();
+  server.handleClient();  
 }
 
 void Polyline() // This routine set up the Polygon SVG string for parsing to w3.org
@@ -82,7 +72,7 @@ void handleRoot()
   snprintf(temp, 400,
            "<html>\
   <head>\
-    <meta http-equiv='refresh' content='1'/>\
+    <meta http-equiv='refresh' content='10'/>\
     <title>ESP8266 SVG Polyline </title>\
     <style>\
       body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
@@ -160,59 +150,83 @@ void Web_Graph::Num_of_Elements()
       Serial.print(Data_Mass[i]);
       Serial.print("         ");
       Serial.println(Flight_Time[i]);
-      delay(350);
+      // delay(350);
     }
   }
 }
 
 void SVG_Graph()
 {
-  String out = "";
+  String out = "";  
   uint16_t *p_xM;
   uint16_t *p_yM;
   p_xM = Flight_Time;
   p_yM = fD.Flight_Data_Massive;
-  char temp[2000];  
-out += "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"580\" height=\"400\" >\n ";
-    out += "<defs>\n";
-      out += "<filter height=\"200%\" width=\"200%\" y=\"-50%\" x=\"-50%\" id=\"svg_2_blur\">\n";
-        out += " <feGaussianBlur stdDeviation=\"3.5\" in=\"SourceGraphic\"/>\n";
-      out += "</filter>\n";
-    out += "</defs>\n";
-  out += "<g>\n";
+  char temp[200]; 
+  uint16_t i, a;
+  Web_Graph dA;
+  switch(GrPart)
+    {
+      case 0: a = 0;  ++GrPart; break;
+      case 1: a = 120; ++GrPart; break;
+      case 2: a = 240; ++GrPart; break;
+      case 3: a = 360;  ++GrPart; break;
+      case 4: a = 480; ++GrPart; break; 
+      case 5: a = 600;  ++GrPart; break;   
+    }
+  out += " <svg width=\"1000\" height=\"1440\" xmlns=\"http://www.w3.org/2000/svg\">\n"; 
+  out += " <g>\n";
     out += " <title>background</title>\n";
-    out += "<rect fill=\"#fcf5d9\" id=\"canvas_background\" height=\"402\" width=\"582\" y=\"-1\" x=\"-1\"/> \n";
-      out += "<g display=\"none\" overflow=\"visible\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\" id=\"canvasGrid\">\n";
-        out += " <rect fill=\"url(#gridpattern)\" stroke-width=\"0\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\"/>\n";
-      out += "</g>  \n"; 
-  out += " </g>   \n"; 
-  out += "<g>  \n"; 
+    out += " <rect fill=\"#fff\" id=\"canvas_background\" height=\"1442\" width=\"1002\" y=\"-1\" x=\"-1\"/>\n";
+      out += " <g display=\"none\" overflow=\"visible\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\" id=\"canvasGrid\">\n";
+      out += " <rect fill=\"url(#gridpattern)\" stroke-width=\"0\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\"/>\n";
+    out += " </g>\n";
+  out += " </g>\n";
+  out += " <g>\n";
     out += " <title>Layer 1</title>\n";
-    out += " <rect id=\"svg_1\" height=\"200\" width=\"400\" y=\"70\" x=\"65\" stroke-width=\"1.5\" stroke=\"#000\" fill=\"#BBBBBB\"/> \n";
-    out += " <line filter=\"url(#svg_2_blur)\" stroke-linecap=\"null\" stroke-linejoin=\"null\" id=\"svg_2\" y2=\"205.450012\" x2=\"465.5\" y1=\"205.450012\" x1=\"65.5\" stroke-opacity=\"null\" stroke-width=\"1.5\" stroke=\"#000\" fill=\"none\"/>\n";
-    out += " <text font-weight=\"bold\" font-style=\"italic\" xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Trebuchet MS', Gadget, sans-serif\" font-size=\"21\" id=\"svg_3\" y=\"58.450012\" x=\"79.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\">График изменения высоты полета</text>\n";
-    out += " <text font-style=\"italic\" xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Times New Roman', Times, serif\" font-size=\"18\" id=\"svg_4\" y=\"290.450012\" x=\"312.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\">Время полета в сек.</text>\n";
-    out += " <text font-weight=\"normal\" font-style=\"italic\" transform=\"rotate(-90, 48.9833, 141.45)\" xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Times New Roman', Times, serif\" font-size=\"18\" id=\"svg_5\" y=\"147.450012\" x=\"-19.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\">Высота в метрах</text>\n";
-    out += " <text xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Times New Roman', Times, serif\" font-size=\"21\" id=\"svg_6\" y=\"327.450012\" x=\"67.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\"> \n"; 
-        sprintf(temp, "Максимальная высота: %d", 125);
-        out += temp;
-    out += " </text>\n";     
-    out += " <text xml:space=\"preserve\" text-anchor=\"start\" font-family=\"'Times New Roman', Times, serif\" font-size=\"21\" id=\"svg_7\" y=\"358.450012\" x=\"68.5\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"0\" stroke=\"#000\" fill=\"#000000\"> \n";
-        sprintf(temp, "Атмосферное давление в точке старта: %d", 101123);
-        out += temp;       
-    out += " </text>\n";    
-  out += "</g>\n";
-  out += "<g stroke=\"black\">\n";
-      for (uint16_t i = 0; i < 2; i++) //Quantity_of_data_points
+    out += " <line stroke-linecap=\"null\" stroke-linejoin=\"null\" id=\"svg_38\" y2=\"1280\" x2=\"60\" y1=\"30\" x1=\"60\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"1.8\" stroke=\"#000\" fill=\"none\"/>\n";
+    out += " <line stroke-linecap=\"null\" stroke-linejoin=\"null\" id=\"svg_39\" y2=\"1280\" x2=\"980\" y1=\"1280\" x1=\"60\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"1.8\" stroke=\"#000\" fill=\"none\"/>\n";
+    out += " <text font-size=\"36\" id=\"svg_33\" y=\"1200\" x=\"10\">0</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_34\" y=\"1100\" x=\"10\">10</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_35\" y=\"1000\" x=\"10\">20</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_41\" y=\"900\" x=\"10\" >30</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_51\" y=\"800\" x=\"10\" >40</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_52\" y=\"700\" x=\"10\" >50</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_53\" y=\"600\" x=\"10\" >60</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_54\" y=\"500\" x=\"10\" >70</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_55\" y=\"400\" x=\"10\" >80</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_56\" y=\"300\" x=\"10\" >90</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_57\" y=\"200\" x=\"1\" >100</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_58\" y=\"100\" x=\"1\" >110</text>\n"; 
+      out += " <text font-size=\"36\" id=\"svg_59\" y=\"1387\" x=\"30\">\n ";
+          sprintf(temp, "Давление в точке старта (Па): %d", int(dPS) );  
+          out += temp;
+      out += " </text>\n";    
+      out += " <text font-size=\"36\" id=\"svg_61\" y=\"1330\" x=\"30\">\n ";
+          sprintf(temp, "Максимальная высота (м): %d", 111);
+          out += temp;
+      out += " </text>\n";     
+      out += " <text font-size=\"36\" id=\"svg_62\" y=\"1387\" x=\"700\">\n ";
+          sprintf(temp, "Страница: %d", GrPart);  
+          out += temp;
+      out += " </text>\n";     
+     out += " </g>\n ";
+  out += "<g stroke=\"black\">\n";      
+      for (i = (0 + a) ; i < (240 + a); i++)
       {        
-        // sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1\" />\n", *(p_xM + i), *(p_yM + i), *(p_xM + (i + 1)), *(p_yM + (i + 1))); 
-        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1\" />\n", 200, 200, 450, 200);       
-        out += temp;      
-      }      
+        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1\" />\n", 60 + *(p_xM + i), 1200 - *(p_yM + i), 60 + *(p_xM + (i + 1)), 1200 - *(p_yM + (i + 1)) );
+        out += temp;                         
+      } 
+      if (GrPart == 5) GrPart = 0;          
   out += "</g>\n";
-out += "</svg>\n";
-  
-  server.send(200, "image/svg+xml", out);
+
+out += "</svg>\n";   
+server.send(200, "image/svg+xml", out);
+}
+
+void SVG_Polyline()
+{ 
+
 }
 
 void HTTP_Start()
