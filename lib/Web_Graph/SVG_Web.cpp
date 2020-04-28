@@ -10,6 +10,7 @@ extern Altitude fD;
 MDNSResponder mdns;
 ESP8266WebServer server(80);
 Web_Graph meOWN_func;
+extern float HL;
 
 #ifdef PC_resolution
   String out_b = "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"1900\" height=\"1000\">\n";
@@ -203,10 +204,10 @@ void SVG_Graph()
           out += temp;
       out += " </text>\n";    
       out += " <text font-size=\"36\" id=\"svg_61\" y=\"1330\" x=\"30\">\n ";
-          sprintf(temp, "Максимальная высота (м): %d", 111);
+          sprintf(temp, "Максимальная высота (м): %f", HL);
           out += temp;
       out += " </text>\n";     
-      out += " <text font-size=\"36\" id=\"svg_62\" y=\"1387\" x=\"700\">\n ";
+      out += " <text font-size=\"36\" id=\"svg_62\" y=\"1387\" x=\"712\">\n ";
           sprintf(temp, "Страница: %d", GrPart);  
           out += temp;
       out += " </text>\n";     
@@ -214,8 +215,9 @@ void SVG_Graph()
   out += "<g stroke=\"black\">\n";      
       for (i = (0 + a) ; i < (240 + a); i++)
       {        
-        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1\" />\n", 60 + *(p_xM + i), 1200 - *(p_yM + i), 60 + *(p_xM + (i + 1)), 1200 - *(p_yM + (i + 1)) );
-        out += temp;                         
+        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1.4\" />\n", 60 + *(p_xM + i), 1200 - *(p_yM + i), 60 + *(p_xM + (i + 1)), 1200 - *(p_yM + (i + 1)) );
+        out += temp; 
+        Serial.println(1200 - *(p_yM + i));                        
       } 
       if (GrPart == 5) GrPart = 0;          
   out += "</g>\n";

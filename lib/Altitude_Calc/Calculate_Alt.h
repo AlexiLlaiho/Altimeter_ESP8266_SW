@@ -33,17 +33,17 @@
 class Altitude
 {
 public:
-    float Calculate_Altitude();
+    double Calculate_Altitude();
     void Write_Data_to_Massive();
     double Pressure_in_Start();
+    void Test_Massive();
 
     double Temp, Hight;
     double mPressure;
     double mSeaLevelPressure;
     uint16_t Flight_Data_Massive[750];
     double SPP;
-    double rP;
-    
+    double rP;  
 };
 
 void smooth(double *input, double *output, int n, int window);

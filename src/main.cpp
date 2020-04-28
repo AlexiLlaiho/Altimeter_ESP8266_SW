@@ -23,6 +23,7 @@ Altitude fD;
 Web_Graph wG;
 char ledState = 0;
 double dPS;
+float HL;
 
 void WiFi_Start(void);
 void Sensors_check_and_start(void);
