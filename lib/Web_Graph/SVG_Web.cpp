@@ -1,7 +1,7 @@
 #include "SVG_Web.h"
 
 extern double dPS;
-extern uint16 Flight_Time[750];
+extern uint16_t Flight_Time[232];
 uint16 Data_Mass[750];
 uint16 Quantity_of_elements;
 uint8_t GrPart = 0; //Вывод нужной части графика
@@ -212,12 +212,12 @@ void SVG_Graph()
           out += temp;
       out += " </text>\n";     
      out += " </g>\n ";
-  out += "<g stroke=\"black\">\n";      
-      for (i = (0 + a) ; i < (240 + a); i++)
+  out += "<g stroke=\"black\">\n";     
+      for (i = 0; i < 215; i++)
       {        
-        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1.4\" />\n", 60 + *(p_xM + i), 1200 - *(p_yM + i), 60 + *(p_xM + (i + 1)), 1200 - *(p_yM + (i + 1)) );
+        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1.4\" />\n", 60 + *(p_xM + i), 1200 - *(p_yM + (i + a)), 60 + *(p_xM + (i + 1)), 1200 - *(p_yM + (i + a + 1)) );
         out += temp; 
-        Serial.println(1200 - *(p_yM + i));                        
+        Serial.println(60 + *(p_xM + i));                        
       } 
       if (GrPart == 5) GrPart = 0;          
   out += "</g>\n";

@@ -4,7 +4,7 @@
 Adafruit_BMP085 bmp;
 #endif
 MS5611 smp;
-extern uint16 Flight_Time[10000];
+extern uint16_t Flight_Time[232];
 extern double dPS;
 uint16_t i = 0;
 uint16_t yMax = 0;
@@ -47,7 +47,7 @@ return Hight*10;
 }
 
 void Altitude::Write_Data_to_Massive()
-{
+{  
 #ifdef vDEBUG
   Serial.print("Mas[i]: ");
   Serial.print(i);
@@ -62,11 +62,13 @@ void Altitude::Write_Data_to_Massive()
   {
     Flight_Data_Massive[i] = 0;
   }
-  HL = fMax(Flight_Data_Massive[i]) / 10;
-  Flight_Time[i] = i;
+  HL = fMax(Flight_Data_Massive[i]) / 10.0;  
 #ifdef vDEBUG
   Serial.print("cur_H: ");
   Serial.print(Flight_Data_Massive[i]);
+  Serial.print("; ");
+  Serial.print(" HL: ");
+  Serial.print(HL);
   Serial.println(";");
 #endif
   if (i < Quantity_of_data_points)
