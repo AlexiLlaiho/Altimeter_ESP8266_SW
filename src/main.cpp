@@ -120,7 +120,7 @@ void aTimer()
 void create_Xdata()
 { 
   uint16_t Priv = 0;  
-  for(uint16_t i = 0; i < 215; i++)
+  for(uint16_t i = 0; i < 230; i++)
   {
     Flight_Time[i] = Priv;
     Priv = Priv + 4;

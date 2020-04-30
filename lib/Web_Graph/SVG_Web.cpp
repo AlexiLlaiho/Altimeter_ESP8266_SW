@@ -169,11 +169,11 @@ void SVG_Graph()
   switch(GrPart)
     {
       case 0: a = 0;  ++GrPart; break;
-      case 1: a = 120; ++GrPart; break;
-      case 2: a = 240; ++GrPart; break;
-      case 3: a = 360;  ++GrPart; break;
-      case 4: a = 480; ++GrPart; break; 
-      case 5: a = 600;  ++GrPart; break;   
+      case 1: a = 240; ++GrPart; break;
+      case 2: a = 480; ++GrPart; break;
+      case 3: a = 700;  ++GrPart; break;
+      case 4: a = 940; ++GrPart; break; 
+      // case 5: a = 600;  ++GrPart; break;   
     }
   out += " <svg width=\"1000\" height=\"1440\" xmlns=\"http://www.w3.org/2000/svg\">\n"; 
   out += " <g>\n";
@@ -212,14 +212,19 @@ void SVG_Graph()
           out += temp;
       out += " </text>\n";     
      out += " </g>\n ";
-  out += "<g stroke=\"black\">\n";     
-      for (i = 0; i < 215; i++)
-      {        
+  out += "<g stroke=\"black\">\n";
+      String outT = "";      
+      for (i = 0; i < 229; i++)
+      {              
         sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1.4\" />\n", 60 + *(p_xM + i), 1200 - *(p_yM + (i + a)), 60 + *(p_xM + (i + 1)), 1200 - *(p_yM + (i + a + 1)) );
         out += temp; 
-        Serial.println(60 + *(p_xM + i));                        
-      } 
-      if (GrPart == 5) GrPart = 0;          
+        if (i==228)
+        {
+          outT += temp;
+          Serial.println(outT);
+        }                                        
+      }      
+      if (GrPart == 4) GrPart = 0;          
   out += "</g>\n";
 
 out += "</svg>\n";   
