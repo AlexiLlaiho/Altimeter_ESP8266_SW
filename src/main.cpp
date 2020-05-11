@@ -6,7 +6,7 @@
 #include "Arduino.h"
 #include "system_status.h"
 #include <ESP8266WiFi.h>
-#include <FS.h> //Include File System Headers
+#include <FS.h> 
 #include "Calculate_Alt.h"
 #include "Wire.h"
 #include "Ticker.h"
@@ -21,6 +21,7 @@ Ticker gDA;
 uint16_t Flight_Time[232];
 extern int8_t dFile_recorded;
 char ledState = 0;
+bool wStop = false;
 double dPS;
 float HL;
 bool itState = false;
@@ -40,19 +41,24 @@ void setup()
   create_Xdata();
   Initialize_File_System();
   GPIO_TIM_setup();     
-  wG.WiFi_Start();
-  //gDA.attach(0.05, aTimer);
+  wG.WiFi_Start();  
 }
 
 void loop()
 {
   while (WiFi.status() != WL_CONNECTED)
-  { 
-    digitalWrite(2, HIGH);    
+  {
+    digitalWrite(2, HIGH);
     dFile_recorded = 0x00;
-    fD.Write_Data_to_Massive();
-    digitalWrite(2, LOW); 
-    delay(50);         
+    if (!wStop)
+    {
+      if (fD.Write_Data_to_Massive())
+      {
+        wStop = true;
+      }
+    }      
+    digitalWrite(2, LOW);
+    delay(50);
   }
 
   if (dFile_recorded == 0x00)
@@ -66,20 +72,6 @@ void loop()
     wG.main_web_cycle();    
   }
 }
-
-// void ICACHE_RAM_ATTR onTimerISR()
-// {
-//   if (ledState == 0)
-//   {
-//     digitalWrite(ledPin, HIGH);
-//     ledState = 1;
-//   }
-//   else
-//   {
-//     digitalWrite(ledPin, LOW);
-//     ledState = 0;
-//   }
-// }
 
 void Sensors_check_and_start()
 {
@@ -103,11 +95,7 @@ Altitude aTD;
 void GPIO_TIM_setup()
 {
   pinMode(2, OUTPUT);
-  pinMode(12, INPUT);
-  // attachInterrupt(digitalPinToInterrupt(12), Run_Interrupt_func, RISING);
-  // timer1_attachInterrupt(onTimerISR);
-  // timer1_enable(TIM_DIV256, TIM_EDGE, TIM_LOOP);
-  // timer1_write(1500);
+  pinMode(12, INPUT);  
 }
 
 void aTimer()

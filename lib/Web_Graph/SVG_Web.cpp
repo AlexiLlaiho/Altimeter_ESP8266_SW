@@ -214,7 +214,7 @@ void SVG_Graph()
      out += " </g>\n ";
   out += "<g stroke=\"black\">\n";
       String outT = "";      
-      for (i = 0; i < 229; i++)
+      for (i = 0; i < 229; i++) //we decrease a number of polyline points for improve graphics 
       {              
         sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1.4\" />\n", 60 + *(p_xM + i), 1200 - *(p_yM + (i + a)), 60 + *(p_xM + (i + 1)), 1200 - *(p_yM + (i + a + 1)) );
         out += temp; 

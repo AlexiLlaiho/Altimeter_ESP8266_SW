@@ -34,7 +34,7 @@ class Altitude
 {
 public:
     double Calculate_Altitude();
-    void Write_Data_to_Massive();
+    bool Write_Data_to_Massive();
     double Pressure_in_Start();
     void Test_Massive();
 

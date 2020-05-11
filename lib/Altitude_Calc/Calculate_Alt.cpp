@@ -46,7 +46,7 @@ Hight = smp.getAltitude(mPressure, dPS);
 return Hight*10;
 }
 
-void Altitude::Write_Data_to_Massive()
+bool Altitude::Write_Data_to_Massive()
 {  
 #ifdef vDEBUG
   Serial.print("Mas[i]: ");
@@ -74,10 +74,12 @@ void Altitude::Write_Data_to_Massive()
   if (i < Quantity_of_data_points)
   {
     ++i;
+    return false;
   }
   else if (i == Quantity_of_data_points)
   {
     i = 0;
+    return true;
   }
 }
 
