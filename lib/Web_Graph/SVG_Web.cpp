@@ -186,9 +186,10 @@ void SVG_Graph()
   out += " </g>\n";
   out += " <g>\n";
     out += " <title>Layer 1</title>\n";
-    out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_1\" y2=\"2630\" x2=\"80\" y1=\"30\" x1=\"80\" stroke-width=\"4\" stroke=\"#000\" fill=\"none\"/>\n";
-    out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_2\" y2=\"2630\" x2=\"950\" y1=\"2630\" x1=\"60\" stroke-width=\"4\" stroke=\"#000\" fill=\"none\"/>\n";
+    out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_1\" y2=\"2630\" x2=\"80\" y1=\"30\" x1=\"80\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
+    out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_2\" y2=\"2630\" x2=\"950\" y1=\"2630\" x1=\"60\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
     out += " <text font-size=\"36\" id=\"svg_3\" y=\"2630\" x=\"25\" stroke-width=\"2\">0</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_8\" y=\"2610\" x=\"25\" stroke-width=\"2\">2</text>\n";
     out += " <text font-size=\"36\" id=\"svg_6\" y=\"1972\" x=\"7\"  stroke-width=\"3\">65</text>\n";
     out += " <text font-size=\"36\" id=\"svg_5\" y=\"1315\" x=\"5\"  stroke-width=\"3\">130</text>\n";
     out += " <text font-size=\"36\" id=\"svg_7\" y=\"640\"  x=\"5\"  stroke-width=\"3\">195</text>\n";
@@ -214,7 +215,7 @@ void SVG_Graph()
       String outT = "";      
       for (i = 0; i < 229; i++) //we decrease a number of polyline points for improve graphics 
       {              
-        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1.4\" />\n", 
+        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"2.1\" />\n", 
                                                                     80 + *(p_xM + i), 
                                                                     2630 - *(p_yM + (i + a)), 
                                                                     80 + *(p_xM + (i + 1)), 

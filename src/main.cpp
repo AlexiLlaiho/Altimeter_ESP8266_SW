@@ -38,6 +38,8 @@ void setup()
   Serial.begin(115200);
   Wire.begin(4, 5);
   Sensors_check_and_start();
+  MS5611 iA;
+  iA.setOversampling(MS5611_ULTRA_HIGH_RES);
   create_Xdata();
   Initialize_File_System();
   GPIO_TIM_setup();     
