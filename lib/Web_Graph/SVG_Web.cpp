@@ -164,7 +164,8 @@ void SVG_Graph()
   p_xM = Flight_Time;
   p_yM = fD.Flight_Data_Massive;
   char temp[200]; 
-  uint16_t i, a;
+  uint16_t i;
+  uint16_t a;
   Web_Graph dA;
   switch(GrPart)
     {
@@ -175,39 +176,36 @@ void SVG_Graph()
       case 4: a = 940; ++GrPart; break; 
       // case 5: a = 600;  ++GrPart; break;   
     }
-  out += " <svg width=\"1000\" height=\"1440\" xmlns=\"http://www.w3.org/2000/svg\">\n"; 
+  out += " <svg width=\"980\" height=\"2750\" xmlns=\"http://www.w3.org/2000/svg\">\n"; 
   out += " <g>\n";
     out += " <title>background</title>\n";
-    out += " <rect fill=\"#fff\" id=\"canvas_background\" height=\"1442\" width=\"1002\" y=\"-1\" x=\"-1\"/>\n";
+    out += " <rect fill=\"#fff\" id=\"canvas_background\" height=\"2752\" width=\"982\" y=\"-1\" x=\"-1\"/>\n";
       out += " <g display=\"none\" overflow=\"visible\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\" id=\"canvasGrid\">\n";
       out += " <rect fill=\"url(#gridpattern)\" stroke-width=\"0\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\"/>\n";
     out += " </g>\n";
   out += " </g>\n";
   out += " <g>\n";
     out += " <title>Layer 1</title>\n";
-    out += " <line stroke-linecap=\"null\" stroke-linejoin=\"null\" id=\"svg_38\" y2=\"1280\" x2=\"60\" y1=\"30\" x1=\"60\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"1.8\" stroke=\"#000\" fill=\"none\"/>\n";
-    out += " <line stroke-linecap=\"null\" stroke-linejoin=\"null\" id=\"svg_39\" y2=\"1280\" x2=\"980\" y1=\"1280\" x1=\"60\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"1.8\" stroke=\"#000\" fill=\"none\"/>\n";
-    out += " <text font-size=\"36\" id=\"svg_33\" y=\"1200\" x=\"10\">0</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_34\" y=\"1100\" x=\"10\">10</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_35\" y=\"1000\" x=\"10\">20</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_41\" y=\"900\" x=\"10\" >30</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_51\" y=\"800\" x=\"10\" >40</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_52\" y=\"700\" x=\"10\" >50</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_53\" y=\"600\" x=\"10\" >60</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_54\" y=\"500\" x=\"10\" >70</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_55\" y=\"400\" x=\"10\" >80</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_56\" y=\"300\" x=\"10\" >90</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_57\" y=\"200\" x=\"1\" >100</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_58\" y=\"100\" x=\"1\" >110</text>\n"; 
-      out += " <text font-size=\"36\" id=\"svg_59\" y=\"1387\" x=\"30\">\n ";
+    out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_1\" y2=\"2630\" x2=\"80\" y1=\"30\" x1=\"80\" stroke-width=\"4\" stroke=\"#000\" fill=\"none\"/>\n";
+    out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_2\" y2=\"2630\" x2=\"950\" y1=\"2630\" x1=\"60\" stroke-width=\"4\" stroke=\"#000\" fill=\"none\"/>\n";
+    out += " <text font-size=\"36\" id=\"svg_3\" y=\"2630\" x=\"25\" stroke-width=\"2\">0</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_6\" y=\"1972\" x=\"7\"  stroke-width=\"3\">65</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_5\" y=\"1315\" x=\"5\"  stroke-width=\"3\">130</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_7\" y=\"640\"  x=\"5\"  stroke-width=\"3\">195</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_4\" y=\"30\"   x=\"5\"  stroke-width=\"2\">260</text>\n";
+    // out += " <line stroke-dasharray=\"2,2\" id=\"svg_8\"  y2=\"1972\" x2=\"950\" y1=\"1972\" x1=\"80\" stroke-width=\"2\"    stroke=\"#000\" fill=\"none\"/>\n";
+    // out += " <line stroke-dasharray=\"2,2\" id=\"svg_10\" y2=\"1315\" x2=\"950\" y1=\"1315\" x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
+    // out += " <line stroke-dasharray=\"2,2\" id=\"svg_11\" y2=\"640\"  x2=\"950\" y1=\"640\"  x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
+    // out += " <line stroke-dasharray=\"2,2\" id=\"svg_12\" y2=\"30\"   x2=\"950\" y1=\"30\"   x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"4\" stroke=\"#000\" fill=\"none\"/>\n";
+      out += " <text font-size=\"36\" id=\"svg_59\" y=\"2690\" x=\"30\">\n ";
           sprintf(temp, "Давление в точке старта (Па): %d", int(dPS) );  
           out += temp;
       out += " </text>\n";    
-      out += " <text font-size=\"36\" id=\"svg_61\" y=\"1330\" x=\"30\">\n ";
+      out += " <text font-size=\"36\" id=\"svg_61\" y=\"2730\" x=\"30\">\n ";
           sprintf(temp, "Максимальная высота (м): %f", HL);
           out += temp;
       out += " </text>\n";     
-      out += " <text font-size=\"36\" id=\"svg_62\" y=\"1387\" x=\"712\">\n ";
+      out += " <text font-size=\"36\" id=\"svg_62\" y=\"2730\" x=\"712\">\n ";
           sprintf(temp, "Страница: %d", GrPart);  
           out += temp;
       out += " </text>\n";     
@@ -216,7 +214,12 @@ void SVG_Graph()
       String outT = "";      
       for (i = 0; i < 229; i++) //we decrease a number of polyline points for improve graphics 
       {              
-        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1.4\" />\n", 60 + *(p_xM + i), 1200 - *(p_yM + (i + a)), 60 + *(p_xM + (i + 1)), 1200 - *(p_yM + (i + a + 1)) );
+        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"1.4\" />\n", 
+                                                                    80 + *(p_xM + i), 
+                                                                    2630 - *(p_yM + (i + a)), 
+                                                                    80 + *(p_xM + (i + 1)), 
+                                                                    2630 - *(p_yM + (i + a + 1))
+                                                                    );
         out += temp; 
         if (i==228)
         {
