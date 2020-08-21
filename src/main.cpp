@@ -114,6 +114,5 @@ void create_Xdata()
   {
     Flight_Time[i] = Priv;
     Priv = Priv + 4;
-    Serial.println(Priv);
   }  
 }

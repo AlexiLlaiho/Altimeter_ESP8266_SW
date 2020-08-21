@@ -41,7 +41,7 @@ public:
     double Temp, Hight;
     double mPressure;
     double mSeaLevelPressure;
-    uint16_t Flight_Data_Massive[1075];
+    uint16_t Flight_Data_Massive[1600];
     double SPP;
     double rP;  
 };

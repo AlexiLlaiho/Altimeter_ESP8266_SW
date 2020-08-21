@@ -49,7 +49,11 @@ void Open_and_Write_File()
       for (uint16 j = 0; j < Quantity_of_data_points; j++)
       {
         f.println(dA.Flight_Data_Massive[j]);
-      }
+        Serial.print("D->M:");
+        Serial.print("  ");
+        Serial.print(j);
+        Serial.println(dA.Flight_Data_Massive[j]);
+      }      
       dFile_recorded = 0x01;
       f.close();
       #ifdef vDEBUG

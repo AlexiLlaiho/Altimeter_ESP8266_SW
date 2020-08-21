@@ -39,29 +39,7 @@ void Web_Graph::main_web_cycle()
 
 void Polyline() // This routine set up the Polygon SVG string for parsing to w3.org
 { 
-  String out = "";
-  uint16_t *p_xM;
-  uint16_t *p_yM;
-  p_xM = Flight_Time;
-  p_yM = fD.Flight_Data_Massive;
-  char temp[2000];
-  out += out_b;
-  out += "<g >\n  <polyline points =\" "; // Start our data string
-  #ifdef vDEBUG
-    Serial.println("Pointers were created..");
-    delay(2000);
-  #endif
-  for (uint16_t i = 0; i < Quantity_of_data_points; i++) //Quantity_of_data_points
-  {
-    sprintf(temp, "%u,%u  %u,%u ", *(p_xM + i), *(p_yM + i), *(p_xM + (i + 1)), *(p_yM + (i + 1)));
-    out += temp;      
-  }
-  out += "\" stroke=\"blue\" stroke-width=\"3\" />\n</g>\n</svg>\n"; //close the SVG wrapper
-#ifdef vDEBUG
-      Serial.println(out);
-    #endif
-  server.send(200, "image/svg+xml", out); /* and send it to http://www.w3.org/2000/svg */
-  delay(10000); /*If you have a Sizable graphic then allow time for the response from w3.org before polling the site again (else things will break) */
+  
 }
 
 void handleRoot()
@@ -108,52 +86,12 @@ void handleNotFound()
 
 void Web_Graph::Check_Connection()
 {
-  WiFi.begin(ssid, password);
-  Serial.println("");
-  // Wait for connection
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.print("Connected to ");
-  Serial.println(ssid);
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
 
-  if (mdns.begin("esp8266", WiFi.localIP() ) )
-  {
-    Serial.println("MDNS responder started");
-  }
-  server.on("/", handleRoot);
-  server.on("/test.svg", Polyline);
-  server.on("/inline", []() { server.send(200, "text/plain", "this works as well"); });
-  server.onNotFound(handleNotFound);
-  server.begin();
-  Serial.println("HTTP server started");
 }
 
 void Web_Graph::Num_of_Elements()
 {
-  Altitude aA;
-
-  Quantity_of_elements = sizeof(aA.Flight_Data_Massive) / sizeof(uint16_t);
-  Serial.println(Quantity_of_elements);
-  if (Quantity_of_elements != 0)
-  {
-    uint16_t Past_Flight_Time = 0;
-    for(uint16_t i = 0; i < Quantity_of_elements; i++)
-    {
-      Data_Mass[i] = hightM - ( fData_Mass[i] * 10 );
-      Flight_Time[i] = 12 + Past_Flight_Time;
-      Past_Flight_Time = Flight_Time[i];
-      Serial.print(Data_Mass[i]);
-      Serial.print("         ");
-      Serial.println(Flight_Time[i]);
-      // delay(350);
-    }
-  }
+ 
 }
 
 void SVG_Graph()
@@ -167,14 +105,16 @@ void SVG_Graph()
   uint16_t i;
   uint16_t a;
   Web_Graph dA;
+  Serial.println("test point in web1");
   switch(GrPart)
     {
       case 0: a = 0;  ++GrPart; break;
       case 1: a = 240; ++GrPart; break;
       case 2: a = 480; ++GrPart; break;
       case 3: a = 700;  ++GrPart; break;
-      case 4: a = 940; ++GrPart; break; 
-      // case 5: a = 600;  ++GrPart; break;   
+      // case 4: a = 940; ++GrPart; break; 
+      // case 5: a = 1180;  ++GrPart; break;  
+      // case 6: a = 1420;  ++GrPart; break;         
     }
   out += " <svg width=\"980\" height=\"2750\" xmlns=\"http://www.w3.org/2000/svg\">\n"; 
   out += " <g>\n";
@@ -188,9 +128,9 @@ void SVG_Graph()
     out += " <title>Layer 1</title>\n";
     out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_1\" y2=\"2630\" x2=\"80\" y1=\"30\" x1=\"80\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
     out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_2\" y2=\"2630\" x2=\"950\" y1=\"2630\" x1=\"60\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
-    out += " <text font-size=\"36\" id=\"svg_3\" y=\"2630\" x=\"25\" stroke-width=\"2\">0</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_8\" y=\"2610\" x=\"25\" stroke-width=\"2\">2</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_6\" y=\"1972\" x=\"7\"  stroke-width=\"3\">65</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_3\" y=\"2630\" x=\"5\" stroke-width=\"2\">0</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_8\" y=\"2610\" x=\"5\" stroke-width=\"2\">2</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_6\" y=\"1972\" x=\"5\"  stroke-width=\"3\">65</text>\n";
     out += " <text font-size=\"36\" id=\"svg_5\" y=\"1315\" x=\"5\"  stroke-width=\"3\">130</text>\n";
     out += " <text font-size=\"36\" id=\"svg_7\" y=\"640\"  x=\"5\"  stroke-width=\"3\">195</text>\n";
     out += " <text font-size=\"36\" id=\"svg_4\" y=\"30\"   x=\"5\"  stroke-width=\"2\">260</text>\n";
@@ -198,6 +138,8 @@ void SVG_Graph()
     // out += " <line stroke-dasharray=\"2,2\" id=\"svg_10\" y2=\"1315\" x2=\"950\" y1=\"1315\" x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
     // out += " <line stroke-dasharray=\"2,2\" id=\"svg_11\" y2=\"640\"  x2=\"950\" y1=\"640\"  x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
     // out += " <line stroke-dasharray=\"2,2\" id=\"svg_12\" y2=\"30\"   x2=\"950\" y1=\"30\"   x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"4\" stroke=\"#000\" fill=\"none\"/>\n";
+      Serial.println("test point in web2");
+      Serial.println(out);
       out += " <text font-size=\"36\" id=\"svg_59\" y=\"2690\" x=\"30\">\n ";
           sprintf(temp, "Давление в точке старта (Па): %d", int(dPS) );  
           out += temp;
