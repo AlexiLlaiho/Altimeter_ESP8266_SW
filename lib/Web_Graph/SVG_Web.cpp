@@ -64,6 +64,7 @@ void handleRoot()
 </html>",
            hr, min % 60, sec % 60);
   server.send(200, "text/html", temp);
+  Serial.println("server_handle_root_start");
 }
 
 void handleNotFound()

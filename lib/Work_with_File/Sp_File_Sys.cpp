@@ -50,8 +50,9 @@ void Open_and_Write_File()
       {
         f.println(dA.Flight_Data_Massive[j]);
         Serial.print("D->M:");
-        Serial.print("  ");
+        Serial.print("  j =");
         Serial.print(j);
+        Serial.print(" . ");
         Serial.println(dA.Flight_Data_Massive[j]);
       }      
       dFile_recorded = 0x01;
