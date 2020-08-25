@@ -113,9 +113,9 @@ void SVG_Graph()
       case 1: a = 240; ++GrPart; break;
       case 2: a = 480; ++GrPart; break;
       case 3: a = 700;  ++GrPart; break;
-      // case 4: a = 940; ++GrPart; break; 
-      // case 5: a = 1180;  ++GrPart; break;  
-      // case 6: a = 1420;  ++GrPart; break;         
+      case 4: a = 940; ++GrPart; break; 
+      case 5: a = 1180;  ++GrPart; break;  
+      case 6: a = 1420;  ++GrPart; break;         
     }
   out += " <svg width=\"980\" height=\"2750\" xmlns=\"http://www.w3.org/2000/svg\">\n"; 
   out += " <g>\n";
@@ -171,7 +171,7 @@ void SVG_Graph()
           Serial.println(outT);
         }                                        
       }      
-      if (GrPart == 4) GrPart = 0;          
+      if (GrPart == 7) GrPart = 0;          
   out += "</g>\n";
 
 out += "</svg>\n";   

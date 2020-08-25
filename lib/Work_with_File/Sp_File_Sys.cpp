@@ -41,24 +41,19 @@ void Open_and_Write_File()
       Serial.println("file open failed");
     }
     else
-    {
-      Altitude dA;
+    {      
       #ifdef vDEBUG
         Serial.println("Saving data in process: ");
       #endif
       for (uint16 j = 0; j < Quantity_of_data_points; j++)
       {
-        f.println(dA.Flight_Data_Massive[j]);
-        Serial.print("D->M:");
-        Serial.print("  j =");
-        Serial.print(j);
-        Serial.print(" . ");
-        Serial.println(dA.Flight_Data_Massive[j]);
+        f.println(A_p.Flight_Data_Massive[j]);        
+        // Serial.println(f.println(A_p.Flight_Data_Massive[j]));
       }      
       dFile_recorded = 0x01;
       f.close();
       #ifdef vDEBUG
-        Serial.println("Attantion! Data were saved!");
+        Serial.println("Data were saved!");
       #endif
     }
 }

@@ -13,7 +13,7 @@
 #define Phone 1 //PC_resolution 1
 #define eWRITE 0x01
 #define dWRITE 0x00
-#define Quantity_of_data_points 1200
+#define Quantity_of_data_points 1700
 #define mSensor 1
 // #define bSensor 1
 
