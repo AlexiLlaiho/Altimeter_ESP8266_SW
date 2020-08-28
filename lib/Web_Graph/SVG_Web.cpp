@@ -97,8 +97,7 @@ void SVG_Graph()
   char temp[200]; 
   uint16_t i;
   uint16_t a;
-  Web_Graph dA;
-  Serial.println("test point in web1");
+  Web_Graph dA;  
   switch(GrPart)
     {
       case 0: a = 0;  ++GrPart; break;
@@ -123,16 +122,17 @@ void SVG_Graph()
     out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_2\" y2=\"2630\" x2=\"950\" y1=\"2630\" x1=\"60\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
     out += " <text font-size=\"36\" id=\"svg_3\" y=\"2660\" x=\"5\" stroke-width=\"2\">0</text>\n";
     out += " <text font-size=\"36\" id=\"svg_8\" y=\"2610\" x=\"5\" stroke-width=\"2\">2</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_6\" y=\"1972\" x=\"5\"  stroke-width=\"3\">65</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_8\" y=\"2530\" x=\"5\" stroke-width=\"2\">10</text>\n";
+    out += " <line stroke-dasharray=\"2,2\" id=\"svg_10\" y2=\"2530\" x2=\"950\" y1=\"2530\" x1=\"80\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
+    out += " <text font-size=\"36\" id=\"svg_6\" y=\"2330\" x=\"5\"  stroke-width=\"3\">30</text>\n";
+    out += " <line stroke-dasharray=\"2,2\" id=\"svg_8\" y2=\"2330\" x2=\"950\" y1=\"2330\" x1=\"80\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
     out += " <text font-size=\"36\" id=\"svg_5\" y=\"1315\" x=\"5\"  stroke-width=\"3\">130</text>\n";
     out += " <text font-size=\"36\" id=\"svg_7\" y=\"640\"  x=\"5\"  stroke-width=\"3\">195</text>\n";
     out += " <text font-size=\"36\" id=\"svg_4\" y=\"30\"   x=\"5\"  stroke-width=\"2\">260</text>\n";
-    // out += " <line stroke-dasharray=\"2,2\" id=\"svg_8\"  y2=\"1972\" x2=\"950\" y1=\"1972\" x1=\"80\" stroke-width=\"2\"    stroke=\"#000\" fill=\"none\"/>\n";
+    
     // out += " <line stroke-dasharray=\"2,2\" id=\"svg_10\" y2=\"1315\" x2=\"950\" y1=\"1315\" x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
     // out += " <line stroke-dasharray=\"2,2\" id=\"svg_11\" y2=\"640\"  x2=\"950\" y1=\"640\"  x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
     // out += " <line stroke-dasharray=\"2,2\" id=\"svg_12\" y2=\"30\"   x2=\"950\" y1=\"30\"   x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"4\" stroke=\"#000\" fill=\"none\"/>\n";
-      Serial.println("test point in web2");
-      Serial.println(out);
       out += " <text font-size=\"36\" id=\"svg_59\" y=\"2690\" x=\"30\">\n ";
           sprintf(temp, "Давление в точке старта (Па): %d", int(dPS) );  
           out += temp;
