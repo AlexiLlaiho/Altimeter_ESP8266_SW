@@ -18,6 +18,7 @@
 Altitude fD;
 Web_Graph wG;
 Ticker gDA;
+MS5611 iA;
 uint16_t Flight_Time[232];
 extern int8_t dFile_recorded;
 char ledState = 0;
@@ -37,9 +38,8 @@ void setup()
   delay(1000);
   Serial.begin(115200);
   Wire.begin(4, 5);
-  Sensors_check_and_start();
-  MS5611 iA;
   iA.setOversampling(MS5611_ULTRA_HIGH_RES);
+  Sensors_check_and_start(); 
   create_Xdata();
   Initialize_File_System();
   GPIO_TIM_setup();     
@@ -88,8 +88,7 @@ Adafruit_BMP085 t;
   }
 #endif
 #ifdef mSensor
-Altitude aTD;
-  Serial.println(aTD.Pressure_in_Start());
+  Serial.println(fD.Pressure_in_Start());
   delay(1500);
 #endif  
 }

@@ -96,8 +96,7 @@ void SVG_Graph()
   p_yM = fD.Flight_Data_Massive;
   char temp[200]; 
   uint16_t i;
-  uint16_t a;
-  Web_Graph dA;  
+  uint16_t a;   
   switch(GrPart)
     {
       case 0: a = 0;  ++GrPart; break;
@@ -130,10 +129,7 @@ void SVG_Graph()
     out += " <text font-size=\"36\" id=\"svg_7\" y=\"640\"  x=\"5\"  stroke-width=\"3\">195</text>\n";
     out += " <text font-size=\"36\" id=\"svg_4\" y=\"30\"   x=\"5\"  stroke-width=\"2\">260</text>\n";
     
-    // out += " <line stroke-dasharray=\"2,2\" id=\"svg_10\" y2=\"1315\" x2=\"950\" y1=\"1315\" x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
-    // out += " <line stroke-dasharray=\"2,2\" id=\"svg_11\" y2=\"640\"  x2=\"950\" y1=\"640\"  x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
-    // out += " <line stroke-dasharray=\"2,2\" id=\"svg_12\" y2=\"30\"   x2=\"950\" y1=\"30\"   x1=\"80\" fill-opacity=\"null\" stroke-opacity=\"null\" stroke-width=\"4\" stroke=\"#000\" fill=\"none\"/>\n";
-      out += " <text font-size=\"36\" id=\"svg_59\" y=\"2690\" x=\"30\">\n ";
+     out += " <text font-size=\"36\" id=\"svg_59\" y=\"2690\" x=\"30\">\n ";
           sprintf(temp, "Давление в точке старта (Па): %d", int(dPS) );  
           out += temp;
       out += " </text>\n";    

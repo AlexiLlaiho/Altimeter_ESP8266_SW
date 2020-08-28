@@ -7,10 +7,10 @@
 
 #include "Sp_File_Sys.h"
 
+extern Altitude fD;
+
 const char *filename = "/samplefile.txt";
 int8_t dFile_recorded = 0x00;
-
-Altitude A_p;
 
 void Initialize_File_System()
 {  
@@ -47,8 +47,7 @@ void Open_and_Write_File()
       #endif
       for (uint16 j = 0; j < Quantity_of_data_points; j++)
       {
-        f.println(A_p.Flight_Data_Massive[j]);        
-        // Serial.println(f.println(A_p.Flight_Data_Massive[j]));
+        f.println(fD.Flight_Data_Massive[j]);
       }      
       dFile_recorded = 0x01;
       f.close();
