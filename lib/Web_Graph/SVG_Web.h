@@ -27,8 +27,6 @@ class Web_Graph
 {
 public:    
     
-    void Check_Connection();
-    void Num_of_Elements();
     void main_web_cycle();
     void WiFi_Start();
 
@@ -43,7 +41,6 @@ void handleNotFound();
 void handleRoot();
 void Polyline();
 void SVG_Graph();
-void SVG_Polyline();
 void HTTP_Start();
 
 #endif //  SVG_WEB_H

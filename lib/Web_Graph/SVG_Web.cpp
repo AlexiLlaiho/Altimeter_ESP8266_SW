@@ -2,15 +2,16 @@
 
 extern double dPS;
 extern uint16_t Flight_Time[232];
-uint16 Data_Mass[750];
+extern float HL;
+extern Altitude fD;
+
 uint16 Quantity_of_elements;
 uint8_t GrPart = 0; //Вывод нужной части графика
-extern Altitude fD;
 
 MDNSResponder mdns;
 ESP8266WebServer server(80);
 Web_Graph meOWN_func;
-extern float HL;
+
 
 #ifdef PC_resolution
   String out_b = "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"1900\" height=\"1000\">\n";
@@ -85,15 +86,6 @@ void handleNotFound()
   server.send(404, "text/plain", message);
 }
 
-void Web_Graph::Check_Connection()
-{
-
-}
-
-void Web_Graph::Num_of_Elements()
-{
- 
-}
 
 void SVG_Graph()
 {
@@ -129,7 +121,7 @@ void SVG_Graph()
     out += " <title>Layer 1</title>\n";
     out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_1\" y2=\"2630\" x2=\"80\" y1=\"30\" x1=\"80\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
     out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_2\" y2=\"2630\" x2=\"950\" y1=\"2630\" x1=\"60\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
-    out += " <text font-size=\"36\" id=\"svg_3\" y=\"2630\" x=\"5\" stroke-width=\"2\">0</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_3\" y=\"2660\" x=\"5\" stroke-width=\"2\">0</text>\n";
     out += " <text font-size=\"36\" id=\"svg_8\" y=\"2610\" x=\"5\" stroke-width=\"2\">2</text>\n";
     out += " <text font-size=\"36\" id=\"svg_6\" y=\"1972\" x=\"5\"  stroke-width=\"3\">65</text>\n";
     out += " <text font-size=\"36\" id=\"svg_5\" y=\"1315\" x=\"5\"  stroke-width=\"3\">130</text>\n";
@@ -178,10 +170,6 @@ out += "</svg>\n";
 server.send(200, "image/svg+xml", out);
 }
 
-void SVG_Polyline()
-{ 
-
-}
 
 void HTTP_Start()
 {
