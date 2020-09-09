@@ -105,7 +105,15 @@ void SVG_Graph()
       case 3: a = 700;  ++GrPart; break;
       case 4: a = 940; ++GrPart; break; 
       case 5: a = 1180;  ++GrPart; break;  
-      case 6: a = 1420;  ++GrPart; break;         
+      case 6: a = 1420;  ++GrPart; break;
+      case 7: a = 1660;  ++GrPart; break;
+      case 8: a = 1900;  ++GrPart; break;
+      case 9: a = 2140; ++GrPart; break;
+      case 10: a = 2380; ++GrPart; break;
+      case 11: a = 2620; ++GrPart; break;
+      case 12: a = 2860; ++GrPart; break;
+      case 13: a = 3100; ++GrPart; break;
+      case 14: a = 3340; ++GrPart; break;
     }
   out += " <svg width=\"980\" height=\"2750\" xmlns=\"http://www.w3.org/2000/svg\">\n"; 
   out += " <g>\n";
@@ -119,8 +127,7 @@ void SVG_Graph()
     out += " <title>Layer 1</title>\n";
     out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_1\" y2=\"2630\" x2=\"80\" y1=\"30\" x1=\"80\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
     out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_2\" y2=\"2630\" x2=\"950\" y1=\"2630\" x1=\"60\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
-    out += " <text font-size=\"36\" id=\"svg_3\" y=\"2660\" x=\"5\" stroke-width=\"2\">0</text>\n";
-    out += " <text font-size=\"36\" id=\"svg_8\" y=\"2610\" x=\"5\" stroke-width=\"2\">2</text>\n";
+    out += " <text font-size=\"36\" id=\"svg_3\" y=\"2660\" x=\"5\" stroke-width=\"2\">0</text>\n";   
     out += " <text font-size=\"36\" id=\"svg_8\" y=\"2530\" x=\"5\" stroke-width=\"2\">10</text>\n";
     out += " <line stroke-dasharray=\"2,2\" id=\"svg_10\" y2=\"2530\" x2=\"950\" y1=\"2530\" x1=\"80\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
     out += " <text font-size=\"36\" id=\"svg_6\" y=\"2330\" x=\"5\"  stroke-width=\"3\">30</text>\n";
@@ -159,7 +166,7 @@ void SVG_Graph()
           Serial.println(outT);
         }                                        
       }      
-      if (GrPart == 7) GrPart = 0;          
+      if (GrPart == 15) GrPart = 0;          
   out += "</g>\n";
 
 out += "</svg>\n";   
