@@ -22,6 +22,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include "Calculate_Alt.h"
+// #include "ESPAsyncWebServer.h"
 
 class Web_Graph
 {
@@ -39,7 +40,6 @@ public:
 
 void handleNotFound();
 void handleRoot();
-void Polyline();
 void SVG_Graph();
 void HTTP_Start();
 

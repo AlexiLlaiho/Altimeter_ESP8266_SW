@@ -38,33 +38,37 @@ void Web_Graph::main_web_cycle()
   server.handleClient();  
 }
 
-void Polyline() // This routine set up the Polygon SVG string for parsing to w3.org
-{ 
-  
-}
-
 void handleRoot()
 {
-  char temp[400];
+  char temp[600];
   int sec = millis() / 1000;
   int min = sec / 60;
   int hr = min / 60;
-  snprintf(temp, 400,
+
+  snprintf(temp, 600,
            "<html>\
   <head>\
     <meta http-equiv='refresh' content='10'/>\
     <title>ESP8266 SVG Polyline </title>\
     <style>\
       body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
+      .btn-group button { background-color: #4CAF50; border : 1px solid green; color: white; padding:  30px 20px; float: left; }\
     </style>\
-  </head>\
-  <body>\
-    <h1>   ESP8266 SVG Polyline </h1>\
-    <img src=\"/test.svg\" />\
-  </body>\
-</html>",
-           hr, min % 60, sec % 60);
+    </head>\
+    <body>\
+    <h1> ESP8266 SVG Polyline</h1>\
+    <img src =\"/test.svg\" />\
+    <div class=\"btn-group\" style=\"width:100%\">\
+      <button> style=\"width:50%\">New Flight</button>\
+      <button> style=\"width:50%\">Turn OFF</button>\
+      </div>\
+    </body>\
+    </html>",
+           hr,
+           min % 60, sec % 60);
+
   server.send(200, "text/html", temp);
+  delay(1500);
   Serial.println("server_handle_root_start");
 }
 
@@ -115,19 +119,20 @@ void SVG_Graph()
       case 13: a = 3100; ++GrPart; break;
       case 14: a = 3340; ++GrPart; break;
     }
-  out += " <svg width=\"980\" height=\"2750\" xmlns=\"http://www.w3.org/2000/svg\">\n"; 
-  out += " <g>\n";
+  
+    out += " <svg width=\"980\" height=\"2750\" xmlns=\"http://www.w3.org/2000/svg\">\n";
+    out += " <g>\n";
     out += " <title>background</title>\n";
     out += " <rect fill=\"#fff\" id=\"canvas_background\" height=\"2752\" width=\"982\" y=\"-1\" x=\"-1\"/>\n";
-      out += " <g display=\"none\" overflow=\"visible\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\" id=\"canvasGrid\">\n";
-      out += " <rect fill=\"url(#gridpattern)\" stroke-width=\"0\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\"/>\n";
+    out += " <g display=\"none\" overflow=\"visible\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\" id=\"canvasGrid\">\n";
+    out += " <rect fill=\"url(#gridpattern)\" stroke-width=\"0\" y=\"0\" x=\"0\" height=\"100%\" width=\"100%\"/>\n";
     out += " </g>\n";
-  out += " </g>\n";
-  out += " <g>\n";
+    out += " </g>\n";
+    out += " <g>\n";
     out += " <title>Layer 1</title>\n";
     out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_1\" y2=\"2630\" x2=\"80\" y1=\"30\" x1=\"80\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
     out += " <line stroke-linecap=\"undefined\" stroke-linejoin=\"undefined\" id=\"svg_2\" y2=\"2630\" x2=\"950\" y1=\"2630\" x1=\"60\" stroke-width=\"1\" stroke=\"#000\" fill=\"none\"/>\n";
-    out += " <text font-size=\"36\" id=\"svg_3\" y=\"2660\" x=\"5\" stroke-width=\"2\">0</text>\n";   
+    out += " <text font-size=\"36\" id=\"svg_3\" y=\"2660\" x=\"5\" stroke-width=\"2\">0</text>\n";
     out += " <text font-size=\"36\" id=\"svg_8\" y=\"2530\" x=\"5\" stroke-width=\"2\">10</text>\n";
     out += " <line stroke-dasharray=\"2,2\" id=\"svg_10\" y2=\"2530\" x2=\"950\" y1=\"2530\" x1=\"80\" stroke-width=\"2\" stroke=\"#000\" fill=\"none\"/>\n";
     out += " <text font-size=\"36\" id=\"svg_6\" y=\"2330\" x=\"5\"  stroke-width=\"3\">30</text>\n";
@@ -135,42 +140,42 @@ void SVG_Graph()
     out += " <text font-size=\"36\" id=\"svg_5\" y=\"1315\" x=\"5\"  stroke-width=\"3\">130</text>\n";
     out += " <text font-size=\"36\" id=\"svg_7\" y=\"640\"  x=\"5\"  stroke-width=\"3\">195</text>\n";
     out += " <text font-size=\"36\" id=\"svg_4\" y=\"30\"   x=\"5\"  stroke-width=\"2\">260</text>\n";
-    
-     out += " <text font-size=\"36\" id=\"svg_59\" y=\"2690\" x=\"30\">\n ";
-          sprintf(temp, "Давление в точке старта (Па): %d", int(dPS) );  
-          out += temp;
-      out += " </text>\n";    
-      out += " <text font-size=\"36\" id=\"svg_61\" y=\"2730\" x=\"30\">\n ";
-          sprintf(temp, "Максимальная высота (м): %f", HL);
-          out += temp;
-      out += " </text>\n";     
-      out += " <text font-size=\"36\" id=\"svg_62\" y=\"2730\" x=\"712\">\n ";
-          sprintf(temp, "Страница: %d", GrPart);  
-          out += temp;
-      out += " </text>\n";     
-     out += " </g>\n ";
-  out += "<g stroke=\"black\">\n";
-      String outT = "";      
-      for (i = 0; i < 229; i++) //we decrease a number of polyline points for improve graphics 
-      {              
-        sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"2.1\" />\n", 
-                                                                    80 + *(p_xM + i), 
-                                                                    2630 - *(p_yM + (i + a)), 
-                                                                    80 + *(p_xM + (i + 1)), 
-                                                                    2630 - *(p_yM + (i + a + 1))
-                                                                    );
-        out += temp; 
-        if (i==228)
-        {
-          outT += temp;
-          Serial.println(outT);
-        }                                        
-      }      
-      if (GrPart == 15) GrPart = 0;          
-  out += "</g>\n";
 
-out += "</svg>\n";   
-server.send(200, "image/svg+xml", out);
+    out += " <text font-size=\"36\" id=\"svg_59\" y=\"2690\" x=\"30\">\n ";
+    sprintf(temp, "Давление в точке старта (Па): %d", int(dPS));
+    out += temp;
+    out += " </text>\n";
+    out += " <text font-size=\"36\" id=\"svg_61\" y=\"2730\" x=\"30\">\n ";
+    sprintf(temp, "Максимальная высота (м): %f", HL);
+    out += temp;
+    out += " </text>\n";
+    out += " <text font-size=\"36\" id=\"svg_62\" y=\"2730\" x=\"712\">\n ";
+    sprintf(temp, "Страница: %d", GrPart);
+    out += temp;
+    out += " </text>\n";
+    out += " </g>\n ";
+    out += "<g stroke=\"black\">\n";
+    String outT = "";
+    for (i = 0; i < 229; i++) //we decrease a number of polyline points for improve graphics
+    {
+      sprintf(temp, "<polyline points=\"%u,%u  %u,%u \" stroke-width=\"2.1\" />\n",
+              80 + *(p_xM + i),
+              2630 - *(p_yM + (i + a)),
+              80 + *(p_xM + (i + 1)),
+              2630 - *(p_yM + (i + a + 1)));
+      out += temp;
+      if (i == 228)
+      {
+        outT += temp;
+        Serial.println(outT);
+      }
+    }
+    if (GrPart == 15) GrPart = 0;
+    out += "</g>\n";
+
+    out += "</svg>\n";
+
+  server.send(200, "image/svg+xml", out);
 }
 
 
