@@ -40,35 +40,34 @@ void Web_Graph::main_web_cycle()
 
 void handleRoot()
 {
-  char temp[600];
-  int sec = millis() / 1000;
-  int min = sec / 60;
-  int hr = min / 60;
+  char temp[1000];
 
-  snprintf(temp, 600,
-           "<html>\
+  snprintf(
+      temp, 1000,
+      "<!DOCTYPE html><html>\
   <head>\
-    <meta http-equiv='refresh' content='10'/>\
+    <meta http-equiv='refresh' content='10'>\
     <title>ESP8266 SVG Polyline </title>\
     <style>\
-      body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
-      .btn-group button { background-color: #4CAF50; border : 1px solid green; color: white; padding:  30px 20px; float: left; }\
+      .button {border:none; color:white; border-radius:8px; padding:80px 150px; text-align:center; text-decoration:none; display:inline-block; font-size:16px; margin:4px 20px;}\
+      .center {margin:0; position:absolute; top:50%; left:50%; -ms-transform:translate(-50%, -50%); transform:translate(-50%, -50%);}\
+      .button1 {background-color: #ff0000;}\
+      .button2 {background-color: #4CAF50;}\
     </style>\
-    </head>\
+  </head>\
     <body>\
-    <h1> ESP8266 SVG Polyline</h1>\
-    <img src =\"/test.svg\" />\
-    <div class=\"btn-group\" style=\"width:100%\">\
-      <button> style=\"width:50%\">New Flight</button>\
-      <button> style=\"width:50%\">Turn OFF</button>\
-      </div>\
-    </body>\
-    </html>",
-           hr,
-           min % 60, sec % 60);
+        <h1> ESP8266 SVG Polyline </h1>\
+        <img src=\"/test.svg\"/>\
+          <a href=\"/TurnOFF\">\
+            <button class=\"button button1\">Turn OFF</button>\
+          </a>\
+          <a href=\"/NewFlight\">\
+            <button class=\"button button2\">New Flight</button>\
+          </a>\
+        </body>\
+    </html>");
 
-  server.send(200, "text/html", temp);
-  delay(1500);
+  server.send(200, "text/html", temp);  
   Serial.println("server_handle_root_start");
 }
 
@@ -118,8 +117,7 @@ void SVG_Graph()
       case 12: a = 2860; ++GrPart; break;
       case 13: a = 3100; ++GrPart; break;
       case 14: a = 3340; ++GrPart; break;
-    }
-  
+    }  
     out += " <svg width=\"980\" height=\"2750\" xmlns=\"http://www.w3.org/2000/svg\">\n";
     out += " <g>\n";
     out += " <title>background</title>\n";
