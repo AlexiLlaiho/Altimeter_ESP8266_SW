@@ -176,6 +176,16 @@ void SVG_Graph()
   server.send(200, "image/svg+xml", out);
 }
 
+void fTurnOFF()
+{
+  pinMode(12, OUTPUT);
+  digitalWrite(12, HIGH);
+}
+
+void fEspRestart()
+{
+  ESP.restart();
+}
 
 void HTTP_Start()
 {
@@ -188,6 +198,8 @@ void HTTP_Start()
   Serial.println("MDNS is working");
   server.on("/", handleRoot);
   server.on("/test.svg", SVG_Graph);
+  server.on("/TurnOFF", fTurnOFF);
+  server.on("/NewFlight", fEspRestart);
   server.on("/inline", []() { server.send(200, "text/plain", "this works as well"); });
   server.onNotFound(handleNotFound);
   server.begin();

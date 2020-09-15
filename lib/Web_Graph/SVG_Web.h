@@ -30,6 +30,7 @@ public:
     
     void main_web_cycle();
     void WiFi_Start();
+    
 
     float Hight;    
     const char *ssid = "bb-alex";
@@ -42,7 +43,8 @@ void handleNotFound();
 void handleRoot();
 void SVG_Graph();
 void HTTP_Start();
-
+void fTurnOFF();
+void fEspRestart();
 #endif //  SVG_WEB_H
 
 
