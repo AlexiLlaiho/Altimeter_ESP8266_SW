@@ -35,14 +35,14 @@ void create_Xdata(void);
 
 void setup()
 {
-  delay(1000);
+  delay(500);
+  GPIO_TIM_setup();
   Serial.begin(115200);
   Wire.begin(4, 5);
   iA.setOversampling(MS5611_ULTRA_HIGH_RES);
   Sensors_check_and_start(); 
   create_Xdata();
-  Initialize_File_System();
-  GPIO_TIM_setup();     
+  Initialize_File_System();      
   wG.WiFi_Start();  
 }
 
@@ -95,8 +95,9 @@ Adafruit_BMP085 t;
 
 void GPIO_TIM_setup()
 {
-  pinMode(2, OUTPUT);
-  pinMode(12, INPUT);  
+  pinMode(2, OUTPUT);  
+  pinMode(12, OUTPUT);
+  digitalWrite(12, HIGH); //it's enable to support power supply without a magnet
 }
 
 void aTimer()

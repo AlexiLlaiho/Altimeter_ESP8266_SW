@@ -177,9 +177,8 @@ void SVG_Graph()
 }
 
 void fTurnOFF()
-{
-  pinMode(12, OUTPUT);
-  digitalWrite(12, HIGH);
+{  
+  digitalWrite(12, LOW); //switch off power supply
 }
 
 void fEspRestart()
