@@ -33,8 +33,8 @@ public:
     
 
     float Hight;    
-    const char *ssid = "bb-alex";
-    const char *password = "AuroraSky1819";
+    const char *ssid = "rrocketsnet";
+    const char *password = "rrockets2021";
     float fData_Mass[3] = {2.34, 2.89, 5.62};
     
 };

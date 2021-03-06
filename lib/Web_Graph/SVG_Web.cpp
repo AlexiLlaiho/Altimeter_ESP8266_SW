@@ -38,39 +38,6 @@ void Web_Graph::main_web_cycle()
   server.handleClient();  
 }
 
-void handleRoot()
-{
-  char temp[1000];
-
-  snprintf(
-      temp, 1000,
-      "<!DOCTYPE html><html>\
-  <head>\
-    <meta http-equiv='refresh' content='10'>\
-    <title>ESP8266 SVG Polyline </title>\
-    <style>\
-      .button {border:none; color:white; border-radius:8px; padding:80px 150px; text-align:center; text-decoration:none; display:inline-block; font-size:16px; margin:4px 20px;}\
-      .center {margin:0; position:absolute; top:50%; left:50%; -ms-transform:translate(-50%, -50%); transform:translate(-50%, -50%);}\
-      .button1 {background-color: #ff0000;}\
-      .button2 {background-color: #4CAF50;}\
-    </style>\
-  </head>\
-    <body>\
-        <h1> ESP8266 SVG Polyline </h1>\
-        <img src=\"/test.svg\"/>\
-          <a href=\"/TurnOFF\">\
-            <button class=\"button button1\">Turn OFF</button>\
-          </a>\
-          <a href=\"/NewFlight\">\
-            <button class=\"button button2\">New Flight</button>\
-          </a>\
-        </body>\
-    </html>");
-
-  server.send(200, "text/html", temp);  
-  Serial.println("server_handle_root_start");
-}
-
 void handleNotFound()
 {
   String message = "File Not Found\n\n";
@@ -119,8 +86,12 @@ void SVG_Graph()
       case 14: a = 3340; ++GrPart; break;
     }
 out += "<html lang=\"en\">\n";
-  out += "<head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <style> body {color: black;  margin: 2% auto;} @media screen and (max-width: 1085px) {body{width: 18%; }} @media screen and (max-width: 642px) {body{width: 45%; }} </style> </head>\n";
-    out += "<body> \n";
+  out += "<head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> \n";
+  out += "<style> body {color: black;  margin: 2% auto;} @media screen and (max-width: 1085px) {body{width: 18%; }} @media screen and (max-width: 642px) {body{width: 45%; }}\n";
+    out += ".button {border:none; color:white; border-radius:4px; padding:6px 20px; text-align:center; font-size:11px; margin:20px 60px;}\n";
+    out += ".button1 {background-color: #ff0000;}\n";  
+  out += " </style> </head>\n";  
+    out += "<body> \n";    
     out += " <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 980 2750\" preserveAspectRatio=\"xMidYMid meet\">\n";
     out += " <g>\n";
       out += " <title>background</title>\n";
@@ -173,7 +144,7 @@ out += "<html lang=\"en\">\n";
           sprintf(temp, "Страница: %d", GrPart);
           out += temp;
         out += " </text>\n";
-    out += " </g>\n ";
+    out += " </g>\n ";    
     out += "<g stroke=\"black\">\n";
     String outT = "";
     for (i = 0; i < 229; i++) //we decrease a number of polyline points for improve graphics
@@ -193,9 +164,10 @@ out += "<html lang=\"en\">\n";
     if (GrPart == 15) GrPart = 0;
     out += "</g>\n";
     out += "</svg>\n";
+    out += "<a href=\"/TurnOFF\"> <button class=\"button button1\">OFF</button> </a>\n ";
   out += "</body> \n";
-out += "</html>\n";
-server.send(200, "html", out); //image/svg+xml
+  out += "</html>\n";
+  server.send(200, "html", out); //image/svg+xml
 }
 
 void fTurnOFF()
@@ -216,11 +188,10 @@ void HTTP_Start()
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
   }
-  Serial.println("MDNS is working");
-  server.on("/", handleRoot);
-  server.on("/test.svg", SVG_Graph);
+  Serial.println("MDNS is working");  
+  server.on("/", SVG_Graph);
   server.on("/TurnOFF", fTurnOFF);
-  server.on("/NewFlight", fEspRestart);
+  // server.on("/NewFlight", fEspRestart);
   server.on("/inline", []() { server.send(200, "text/plain", "this works as well"); });
   server.onNotFound(handleNotFound);
   server.begin();
