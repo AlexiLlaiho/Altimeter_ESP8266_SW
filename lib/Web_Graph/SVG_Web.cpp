@@ -180,9 +180,24 @@ void fEspRestart()
   ESP.restart();
 }
 
+void static_ip_setup()
+{
+  IPAddress local_IP(192, 168, 43, 205); // Задаем статический IP-адрес
+  IPAddress gateway(192, 168, 1, 1);     // Задаем IP-адрес сетевого шлюза
+
+  IPAddress subnet(255, 255, 0, 0);
+  IPAddress primaryDNS(8, 8, 8, 8);   // опционально
+  IPAddress secondaryDNS(8, 8, 4, 4); // опционально
+
+  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS))
+  {
+    Serial.println("STA Failed to configure"); //"Не удалось задать статический IP-адрес"
+  }
+}
+
 void HTTP_Start()
 {
-  if (mdns.begin("esp8266", WiFi.localIP()))
+  if (mdns.begin("esp8266"))
   {
     Serial.println("MDNS responder started");
     Serial.print("IP address: ");

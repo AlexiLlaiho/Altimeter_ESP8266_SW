@@ -29,19 +29,19 @@ class Web_Graph
 public:    
     
     void main_web_cycle();
-    void WiFi_Start();
-    
+    void WiFi_Start();    
 
     float Hight;    
     const char *ssid = "rrocketsnet";
     const char *password = "rrockets2021";
-    float fData_Mass[3] = {2.34, 2.89, 5.62};
+    float fData_Mass[3] = {2.34, 2.89, 5.62};    
     
 };
 
 void handleNotFound();
 void handleRoot();
 void SVG_Graph();
+void static_ip_setup();
 void HTTP_Start();
 void fTurnOFF();
 void fEspRestart();
