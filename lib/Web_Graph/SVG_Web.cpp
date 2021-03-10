@@ -164,7 +164,7 @@ out += "<html lang=\"en\">\n";
     if (GrPart == 15) GrPart = 0;
     out += "</g>\n";
     out += "</svg>\n";
-    out += "<a href=\"/TurnOFF\"> <button class=\"button button1\">OFF</button> </a>\n ";
+    // out += "<a href=\"/TurnOFF\"> <button class=\"button button1\">OFF</button> </a>\n ";
   out += "</body> \n";
   out += "</html>\n";
   server.send(200, "html", out); //image/svg+xml
